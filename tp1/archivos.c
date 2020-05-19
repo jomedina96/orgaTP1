@@ -48,11 +48,11 @@ bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
             reading_row = false;
             idx_row = 0;
         } else if (buffer_file[idx_file] == '\n') {
+            buffer_row[idx_row] = '\0';
+            buffer_col[idx_col] = '\0';
             if (!validate_and_process_row(a, M, N, buffer_row, buffer_col)) {
                 return false;
             }
-            buffer_row[idx_row] = '\0';
-            buffer_col[idx_col] = '\0';
             idx_row = 0;
             idx_col = 0;
             reading_row = true;
@@ -69,6 +69,9 @@ bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
         }
         idx_file++;
     }
+
+    buffer_row[idx_row] = '\0';
+    buffer_col[idx_col] = '\0';
     if (idx_file > 0) {
         return validate_and_process_row(a, M, N, buffer_row, buffer_col);
     }
