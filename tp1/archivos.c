@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <ctype.h>
-
-#define ALIVE_CELL 1
-#define DEAD_CELL 0
-#define BUFFER_ROW_MAX_SIZE 10
-#define BUFFER_COL_MAX_SIZE 10
+#include "archivos.h"
 
 bool load_input(unsigned char** a, int M, int N, char* file_name) {
     FILE* input = fopen(file_name, "r+t");
@@ -21,7 +13,7 @@ bool load_input(unsigned char** a, int M, int N, char* file_name) {
         return false;
     }
 
-    int read = fread(buffer, sizeof(char), numbytes, input);
+    int read = fread(buffer, sizeof(char), numBytes, input);
 	buffer[read]='\0';
     
     fclose(input);
@@ -40,7 +32,7 @@ bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
     char buffer_col[BUFFER_COL_MAX_SIZE];
     buffer_col[0] = '\0';
     bool reading_row = true;
-    bool has_to_validate_last_row = false;
+
     while (buffer_file[idx_file] != '\0') {
         if (!reading_row && (buffer_file[idx_file] == ' ')) {
             return false;
@@ -70,9 +62,9 @@ bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
         idx_file++;
     }
 
-    buffer_row[idx_row] = '\0';
-    buffer_col[idx_col] = '\0';
     if (idx_file > 0) {
+        buffer_row[idx_row] = '\0';
+        buffer_col[idx_col] = '\0';
         return validate_and_process_row(a, M, N, buffer_row, buffer_col);
     }
     return true;
