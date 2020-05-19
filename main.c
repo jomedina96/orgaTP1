@@ -3,6 +3,9 @@
 #include <getopt.h>
 #include <stdlib.h>
 
+static FILE *inputfile;
+static FILE *outfile;
+
 void show_help() {
     fprintf(stderr, "\n");
     fprintf(stderr, "Uso:\n");
@@ -11,7 +14,7 @@ void show_help() {
     fprintf(stderr, "\tconway i M N inputfile [-o outputprefix]\n");
     fprintf(stderr, "\n");
     fprintf(stderr, "Opciones:\n");
-    fprintf(stderr, "\t-h, --help \t\t Imprime este mensaje.\n");
+    fprintf(stderr, "\t-h, --help \t Imprime este mensaje.\n");
     fprintf(stderr, "\t-V, --version \t Da la versión del programa.\n");
     fprintf(stderr, "\t-o, --outfile \t Prefijo de los archivos de salida.\n");
     fprintf(stderr, "\n");
@@ -36,18 +39,33 @@ void show_version() {
     fprintf(stderr, "\n");
 }
 
+void openfile(char* namefile) {
+    inputfile = fopen(namefile, "r");
+    if (inputfile == NULL) {
+        perror(namefile);
+        exit(1);
+    }
+}
+
 int main(int argc, char* argv[]) {
+
     int option;
-    while ((option = getopt(argc, argv, "hV")) != -1)
+
+    /* Parse arguments */
+    while ((option = getopt(argc, argv, "o:hV")) != -1)
     {
         switch (option)
         {
-        case 'h':
+        case 'o': /* outfile */
+            fprintf(stderr, "Nombre de archivo de salida: %s \n", optarg);
+            break;
+
+        case 'h': /* help */
             show_help();
             exit(0);
             break;
         
-        case 'V':
+        case 'V': /* version */
             show_version();
             exit(0);
             break;
@@ -58,6 +76,18 @@ int main(int argc, char* argv[]) {
             break;
         }
     }
-    
+
+    int arg_i = atoi(argv[3]);
+    int arg_M = atoi(argv[4]);
+    int arg_N = atoi(argv[5]);
+    char* arg_namefile = argv[6];
+
+    openfile(arg_namefile);
+
+    fprintf(stderr, "Cantidad de iteraciones: %i \n", arg_i);
+    fprintf(stderr, "Cantidad de filas: %i \n", arg_M);
+    fprintf(stderr, "Cantidad de columnas: %i \n", arg_N);
+    fprintf(stderr, "Nombre de archivo de entrada: %s \n", arg_namefile);
+
     return 0;
 }
