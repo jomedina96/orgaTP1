@@ -38,7 +38,6 @@ bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
             return false;
         } else if (buffer_file[idx_file] == ' ') {
             reading_row = false;
-            idx_row = 0;
         } else if (buffer_file[idx_file] == '\n') {
             buffer_row[idx_row] = '\0';
             buffer_col[idx_col] = '\0';
