@@ -31,10 +31,6 @@ bool load_input(unsigned char** a, int M, int N, char* file_name) {
     return couldProcessFile;
 }
 
-void destroy_buffer(char* buffer) {
-    free(buffer);
-}
-
 bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
     int idx_file = 0;
     int idx_row = 0;
