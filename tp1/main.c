@@ -2,6 +2,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include "archivos.h"
 
 void show_help() {
     fprintf(stderr, "\n");
@@ -73,13 +74,17 @@ int main(int argc, char* argv[]) {
     char* arg_namefile = argv[6];
 
     //Esto es para probar la salida de cada parámetro (después se elimina)
-    fprintf(stderr, "Cantidad de iteraciones: %i \n", arg_i);
-    fprintf(stderr, "Cantidad de filas: %i \n", arg_M);
-    fprintf(stderr, "Cantidad de columnas: %i \n", arg_N);
-    fprintf(stderr, "Nombre de archivo de entrada: %s \n", arg_namefile);
-    fprintf(stderr, "Nombre de archivo de salida: %s \n", filenameo);
+    fprintf(stdout, "Cantidad de iteraciones: %i \n", arg_i);
+    fprintf(stdout, "Cantidad de filas: %i \n", arg_M);
+    fprintf(stdout, "Cantidad de columnas: %i \n", arg_N);
+    fprintf(stdout, "Nombre de archivo de entrada: %s \n", arg_namefile);
+    fprintf(stdout, "Nombre de archivo de salida: %s \n", filenameo);
 
     //Con los parámetros ya obtenidos, a continuación se puede invocar todas las funciones restantes...
+    unsigned char** game = create_game(arg_M, arg_N);
+    load_input(game, arg_M, arg_N, arg_namefile);
+    save_game(game, arg_M, arg_N, filenameo, 1);
+    destroy_game(game, arg_M);
 
     return 0;
 }
