@@ -1,27 +1,18 @@
 #include "archivos.h"
-void destroy_game(unsigned char** a, unsigned int M) {
-    for (int i = 0; i<M; i++) {
-        free(a[i]);
-    }
+void destroy_game(unsigned char* a) {
     free(a);
 }
 
-unsigned char** create_game(unsigned int M, unsigned int N) {
-    unsigned char** a = malloc(sizeof(unsigned char*)*M);
+unsigned char* create_game(unsigned int M, unsigned int N) {
+    unsigned char* a = malloc(sizeof(unsigned char*)*M*N);
     if (!a) return NULL;
-    for (int i = 0; i < M; i++) {
-        a[i] = malloc(sizeof(unsigned char) * N);
-        if (!a[i]) {
-            destroy_game(a, i);
-            return NULL;
-        }
-        for (int j = 0; j<N; j++) {
-            a[i][j] = DEAD_CELL;
-        }
+    for (int i = 0; i < M*N; i++) {
+        a[i] = DEAD_CELL;
     }
     return a;
 }
-bool save_game(unsigned char** a, unsigned int M, unsigned int N, char* prefix_name, int step) {
+
+bool save_game(unsigned char *a, unsigned int M, unsigned int N, char* prefix_name, int step) {
     char* file_name = malloc(sizeof(char)*(strlen(prefix_name)+9)); // "_000.PBM"
     if (!file_name) return false;
 
@@ -37,14 +28,15 @@ bool save_game(unsigned char** a, unsigned int M, unsigned int N, char* prefix_n
     for (int i = 0; i < M; i++) {
         fputc('\n', output);
         for (int j = 0; j < N; j++) {
-            fprintf(output, "%c ", a[i][j]);
+            unsigned int referencePoint =  i * N + j;
+            fprintf(output, "%c ", a[referencePoint]);
         }
     }
     fclose(output);
     return true;
 }
 
-bool load_input(unsigned char** a, unsigned int M, unsigned int N, char* file_name) {
+bool load_input(unsigned char *a, unsigned int M, unsigned int N, char* file_name) {
     FILE* input = fopen(file_name, "r+t");
     if (!input) return false;
     fseek(input, 0L, SEEK_END);
@@ -67,7 +59,7 @@ bool load_input(unsigned char** a, unsigned int M, unsigned int N, char* file_na
     return couldProcessFile;
 }
 
-bool process_file(unsigned char** a, unsigned int M, unsigned int N, char* buffer_file) {
+bool process_file(unsigned char *a, unsigned int M, unsigned int N, char* buffer_file) {
     int idx_file = 0;
     int idx_row = 0;
     int idx_col = 0;
@@ -117,15 +109,16 @@ bool process_file(unsigned char** a, unsigned int M, unsigned int N, char* buffe
     return true;
 }
 
-bool validate_and_process_row(unsigned char** a, unsigned int M, unsigned int N, char* buffer_row, char* buffer_col) {
+bool validate_and_process_row(unsigned char *a, unsigned int M, unsigned int N, char* buffer_row, char* buffer_col) {
     if ((strlen(buffer_row) == 0 ) || (strlen(buffer_col) == 0 )) return false;
     
-    int row_number = atoi(buffer_row);
-    int col_number = atoi(buffer_col);
+    int row_number = atoi(buffer_row) - 1;
+    int col_number = atoi(buffer_col) - 1;
 
     if ((row_number>M) || (col_number>N)) return false;
 
-    a[row_number][col_number] = ALIVE_CELL;
+    unsigned int referencePoint =  row_number * N + col_number;
+    a[referencePoint] = ALIVE_CELL;
 
     return true;
 }

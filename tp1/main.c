@@ -74,16 +74,13 @@ int main(int argc, char* argv[]) {
     int arg_N = atoi(argv[5]);
     char* arg_namefile = argv[6];
 
-    unsigned char** game = create_game(arg_M, arg_N);
+    unsigned char* game = create_game(arg_M, arg_N);
     load_input(game, arg_M, arg_N, arg_namefile);
-    if (load_input) {
-        for (int i = 0; i < arg_i; i++) {
+
+    for (int i = 0; i < arg_i; i++) {
             play_game(game, arg_M, arg_N);
-            save_game(game, arg_M, arg_N, filenameo, i);
-        }
-        destroy_game(game, arg_M);
-    } else {
-        return 1;
+            //save_game(game, arg_M, arg_N, filenameo, i);
     }
+    destroy_game(game);
     return 0;
 }
