@@ -1,7 +1,7 @@
 #include "neighbors.h"
+#include "archivos.h"
 
-void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize)
-{
+void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize) {
 	 for (int i = 0; i < rowsSize; i++) {
         for (int j = 0; j < columnsSize; j++){
             printf("%c", *(neighborhood));
@@ -13,14 +13,34 @@ void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize)
 	return;
 }
 
-/*
-int main(int argc, char* argv[]) {
-    char glider[5][4] = {{'0','0','1','0'},{'1','0','1','0'},{'1','1','0','1'},{'0','1','1','0'},{'0','0','0','0'}};
-    int rowsSize = (sizeof(glider)/sizeof(glider[0]));
-    int columnsSize = (sizeof(glider[0])/sizeof(glider[0][0]));
-    showNeighborhood(glider, rowsSize, columnsSize);
-    int liveNeighbors = vecinos(glider, 2, 3, rowsSize, columnsSize);
-    printf("cantidad de vecinos vivos: ");
-    printf("%d\n", liveNeighbors);
+unsigned char evaluate_conditions(unsigned int alive_neighbors, unsigned char my_state) {
+    
+    if (alive_neighbors < 2 || alive_neighbors > 3) {
+        return DEAD_CELL;
+    }
+    if (my_state == ALIVE_CELL) {
+        if(alive_neighbors == 2 || alive_neighbors == 3) {
+            return ALIVE_CELL;
+        }
+    } else {
+        if (alive_neighbors == 3) {
+            return DEAD_CELL;
+        }
+    }
+    return my_state;
+} 
+
+
+void play_game(unsigned char** a, unsigned int rows_size, unsigned int columns_size) {
+    unsigned char** matrix = create_game(rows_size, columns_size);
+    int neighbor;
+    char new_state;
+    for (int i = 0; i < rows_size; i++) {
+        for (int j = 0; j < columns_size; j++) {
+            neighbor = vecinos(a[0], i, j, rows_size, columns_size);
+             matrix[i][j] = evaluate_conditions(neighbor, a[i][j]);
+		}
+    }
+    destroy_game(a, rows_size);
+    a = matrix;
 }
-*/
