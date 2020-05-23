@@ -1,7 +1,7 @@
 #include "neighbors.h"
 
 //Funcion que busque los laterales dado un punto
-unsigned int* findSides(unsigned int referencePoint,unsigned int column,unsigned int columnsSize,unsigned int* sides) {
+void findSides(unsigned int referencePoint,unsigned int column,unsigned int columnsSize,unsigned int* sides) {
     printf("Calculo sides \n");
     //Analiza que no este en el borde derecho o izquierdo
     if (column != 0 && column != (columnsSize -1)) {
@@ -18,11 +18,10 @@ unsigned int* findSides(unsigned int referencePoint,unsigned int column,unsigned
             sides[1] = referencePoint - columnsSize + 1;
         }
     }
-    return sides;
 }
 
 //Funcion que se encarga de encontrar a todos los vecinos del perimetro
-unsigned int* findNeighbors(unsigned int referencePoint,unsigned int row,unsigned int column,unsigned int rowsSize,unsigned int columnsSize,unsigned int* neighborsPerimeter) {
+void findNeighbors(unsigned int referencePoint,unsigned int row,unsigned int column,unsigned int rowsSize,unsigned int columnsSize,unsigned int* neighborsPerimeter) {
    unsigned int top;
    unsigned int bottom;
    unsigned int centralSides[SIDES_SIZE];
@@ -59,8 +58,6 @@ unsigned int* findNeighbors(unsigned int referencePoint,unsigned int row,unsigne
     neighborsPerimeter[5] = topSides[1];
     neighborsPerimeter[6] = bottomSides[0];
     neighborsPerimeter[7] = bottomSides[1];
-    
-    return neighborsPerimeter;
 } 
 
 unsigned int vecinos(unsigned char* a,unsigned int i,unsigned int j,unsigned int M,unsigned int N) {
@@ -74,5 +71,7 @@ unsigned int vecinos(unsigned char* a,unsigned int i,unsigned int j,unsigned int
         printf("%d\n", neighborsPerimeter[pos]);
         neighborCounter += *(neighborsPerimeter[pos] + a) - DEAD_CELL;
     }
+    printf("Cantidad de vecinos vivos:\n");
+    printf("%d\n", neighborCounter);
     return neighborCounter; 
 }
