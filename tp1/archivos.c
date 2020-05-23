@@ -1,12 +1,12 @@
 #include "archivos.h"
-void destroy_game(unsigned char** a, int M) {
+void destroy_game(unsigned char** a, unsigned int M) {
     for (int i = 0; i<M; i++) {
         free(a[i]);
     }
     free(a);
 }
 
-unsigned char** create_game(int M, int N) {
+unsigned char** create_game(unsigned int M, unsigned int N) {
     unsigned char** a = malloc(sizeof(unsigned char*)*M);
     if (!a) return NULL;
     for (int i = 0; i < M; i++) {
@@ -21,7 +21,7 @@ unsigned char** create_game(int M, int N) {
     }
     return a;
 }
-bool save_game(unsigned char** a, int M, int N, char* prefix_name, int step) {
+bool save_game(unsigned char** a, unsigned int M, unsigned int N, char* prefix_name, int step) {
     char* file_name = malloc(sizeof(char)*(strlen(prefix_name)+9)); // "_000.PBM"
     if (!file_name) return false;
 
@@ -44,7 +44,7 @@ bool save_game(unsigned char** a, int M, int N, char* prefix_name, int step) {
     return true;
 }
 
-bool load_input(unsigned char** a, int M, int N, char* file_name) {
+bool load_input(unsigned char** a, unsigned int M, unsigned int N, char* file_name) {
     FILE* input = fopen(file_name, "r+t");
     if (!input) return false;
     fseek(input, 0L, SEEK_END);
@@ -67,7 +67,7 @@ bool load_input(unsigned char** a, int M, int N, char* file_name) {
     return couldProcessFile;
 }
 
-bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
+bool process_file(unsigned char** a, unsigned int M, unsigned int N, char* buffer_file) {
     int idx_file = 0;
     int idx_row = 0;
     int idx_col = 0;
@@ -117,7 +117,7 @@ bool process_file(unsigned char** a, int M, int N, char* buffer_file) {
     return true;
 }
 
-bool validate_and_process_row(unsigned char** a, int M, int N, char* buffer_row, char* buffer_col) {
+bool validate_and_process_row(unsigned char** a, unsigned int M, unsigned int N, char* buffer_row, char* buffer_col) {
     if ((strlen(buffer_row) == 0 ) || (strlen(buffer_col) == 0 )) return false;
     
     int row_number = atoi(buffer_row);
