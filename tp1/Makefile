@@ -1,8 +1,8 @@
 #Variables
 CC = gcc
 CFLAGS = -Wall -g
-SRC = main.c juego.c archivos.c
-OBJ = main.o juego.o archivos.o
+SRC = main.c game.c archivos.c neighbors.c
+OBJ = main.o game.o archivos.o neighbors.o
 FNAME = conway
 
 #Rules
@@ -13,4 +13,4 @@ $(OBJ): $(SRC)
 	$(CC) -c $(SRC)
 
 clean:
-	rm -f conway *.o
+	rm -f conway *.o *.PBM
