@@ -74,13 +74,14 @@ int main(int argc, char* argv[]) {
     int arg_N = atoi(argv[5]);
     char* arg_namefile = argv[6];
 
-    unsigned char* game = create_game(arg_M, arg_N);
+    unsigned char* game = create_matrix_with_dead_cells(arg_M, arg_N);
     load_input(game, arg_M, arg_N, arg_namefile);
 
     for (int i = 0; i < arg_i; i++) {
             play_game(game, arg_M, arg_N);
-            //save_game(game, arg_M, arg_N, filenameo, i);
+            save_game(game, arg_M, arg_N, filenameo, i);
     }
+    printf("Listo\n");
     destroy_game(game);
     return 0;
 }

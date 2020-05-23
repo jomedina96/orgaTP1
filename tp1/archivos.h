@@ -16,6 +16,6 @@ bool load_input(unsigned char *a, unsigned int M, unsigned int N, char* file_nam
 bool process_file(unsigned char *a, unsigned int M, unsigned int N, char* buffer_file);
 bool validate_and_process_row(unsigned char *a, unsigned int M, unsigned int N, char* buffer_row, char* buffer_col);
 bool save_game(unsigned char *a, unsigned int M, unsigned int N, char* prefix_name, int step);
-unsigned char* create_game(unsigned int M, unsigned int N);
+unsigned char* create_matrix_with_dead_cells(unsigned int M, unsigned int N);
 void destroy_game(unsigned char* a);
 #endif

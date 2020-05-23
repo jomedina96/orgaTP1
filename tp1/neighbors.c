@@ -61,10 +61,6 @@ void findNeighbors(unsigned int referencePoint,unsigned int row,unsigned int col
 } 
 
 unsigned int vecinos(unsigned char* a,unsigned int i,unsigned int j,unsigned int M,unsigned int N) {
-    if ((i==3) && (j==2)) {
-        printf("asd");
-    }
-
    unsigned int referencePoint =  i * N + j;
    unsigned int neighborsPerimeter [NEIGHBORS_PERIMETER_SIZE];
    unsigned int neighborCounter = 0;

@@ -1,7 +1,6 @@
-#include "neighbors.h"
-#include "archivos.h"
+#include "game.h"
 
-void showNeighborhood(unsigned char* neighborhood,unsigned int rowsSize,unsigned int columnsSize) {
+void show_neighborhood(unsigned char* neighborhood, unsigned int rowsSize, unsigned int columnsSize) {
 	 for (int i = 0; i < rowsSize; i++) {
         for (int j = 0; j < columnsSize; j++){
             printf("%c ", *(neighborhood));
@@ -30,8 +29,7 @@ unsigned char evaluate_conditions(unsigned int alive_neighbors, unsigned char my
 
 
 void play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_size) {
-    unsigned char *matrix = create_game(rows_size, columns_size);
-    showNeighborhood(a, rows_size, columns_size);
+    unsigned char *matrix = create_matrix_with_dead_cells(rows_size, columns_size);
 
     for (unsigned int i = 0; i < rows_size; i++) {
         for (unsigned int j = 0; j < columns_size; j++) {
@@ -40,8 +38,15 @@ void play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_si
             matrix[referencePoint] = evaluate_conditions(neighbor, a[referencePoint]);
 		}
     }
-    save_game(a, rows_size, columns_size, "original", 0);
-    save_game(matrix, rows_size, columns_size, "post", 0);
-    //destroy_game(a, rows_size);
-    //a = matrix;
+    copy_matrix(a, matrix, rows_size, columns_size);
+    destroy_game(matrix);
+}
+
+void copy_matrix(unsigned char *a, unsigned char *matrix, unsigned int rows_size, unsigned int columns_size) {
+    for (unsigned int i = 0; i < rows_size; i++) {
+        for (unsigned int j = 0; j < columns_size; j++) {
+            unsigned int referencePoint =  i * columns_size + j;
+            a[referencePoint] = matrix[referencePoint];
+        }
+    }
 }

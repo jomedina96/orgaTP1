@@ -3,7 +3,7 @@ void destroy_game(unsigned char* a) {
     free(a);
 }
 
-unsigned char* create_game(unsigned int M, unsigned int N) {
+unsigned char* create_matrix_with_dead_cells(unsigned int M, unsigned int N) {
     unsigned char* a = malloc(sizeof(unsigned char*)*M*N);
     if (!a) return NULL;
     for (int i = 0; i < M*N; i++) {
@@ -19,10 +19,9 @@ bool save_game(unsigned char *a, unsigned int M, unsigned int N, char* prefix_na
     sprintf(file_name, "%s_%03d.PBM", prefix_name, step);
 
     FILE* output = fopen(file_name, "w");
-    free(file_name);
     if (!output) return false;
-    // row = M
-    // col_number = N
+    printf("Grabando %s\n", file_name);
+    free(file_name);
     fprintf(output, "P1\n%d %d", M, N);
 
     for (int i = 0; i < M; i++) {
