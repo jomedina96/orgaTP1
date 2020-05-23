@@ -1,11 +1,10 @@
-/* Inclusión de archivos */
 #include <stdio.h>
 #include <stdlib.h>
 #define DEAD_CELL '0'
 #define NEIGHBORS_PERIMETER_SIZE 8
 #define SIDES_SIZE 2
 
-void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize) /* Función donde se ejecuta la lógica del programa */
+void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize)
 {
 	 for (int i = 0; i < rowsSize; i++) {
         for (int j = 0; j < columnsSize; j++){
@@ -15,30 +14,31 @@ void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize) /* Func
 		}
         printf("\n");
     }
-	return; /* sale de la función */
+	return;
 }
 
+//Funcion que busque los laterales dado un punto
 int* findSides(int referencePoint, int column, int columnsSize, int* sides) {
     printf("Calculo sides \n");
-    //int* sides = malloc(2*sizeof(int));
+    //Analiza que no este en el borde derecho o izquierdo
     if (column != 0 && column != (columnsSize -1)) {
         sides[0] = referencePoint - 1;
         sides[1] = referencePoint + 1;
     } else {
+        //si esta en el borde izquierdo
         if (column == 0) {
             sides[0] = referencePoint + columnsSize - 1;
             sides[1] = referencePoint + 1;
         } else {
+            //si esta en el borde derecho
             sides[0] = referencePoint - 1;
             sides[1] = referencePoint - columnsSize + 1;
         }
     }
-    printf("%d\n", sides[0]);
-    printf("%d\n", sides[1]);
     return sides;
 }
 
-
+//Funcion que se encarga de encontrar a todos los vecinos del perimetro
 int* findNeighbors(int referencePoint, int row, int column, int rowsSize, int columnsSize, int* neighborsPerimeter) {
     int top;
     int bottom;
@@ -47,19 +47,21 @@ int* findNeighbors(int referencePoint, int row, int column, int rowsSize, int co
     int bottomSides[SIDES_SIZE];
 
     findSides(referencePoint, column, columnsSize, centralSides);
-    
+    //analiza si el punto no esta en el borde superior o inferior
     if (row > 0 && row < rowsSize - 1) {
         top = referencePoint - columnsSize;
         findSides(top, column, columnsSize, topSides);
         bottom = referencePoint + columnsSize;
         findSides(bottom, column, columnsSize, bottomSides);
     } else {
+        //si esta en el borde superior
         if (row == 0) {
             top = referencePoint + columnsSize*(rowsSize - 1);
             findSides(top, column, columnsSize, topSides);
             bottom = referencePoint + columnsSize;
             findSides(bottom, column, columnsSize, bottomSides);
         } else {
+            //si esta en el borde inferior
             top = referencePoint - columnsSize;
             findSides(top, column, columnsSize, topSides);
             bottom = referencePoint - columnsSize * (rowsSize - 1);
@@ -84,6 +86,7 @@ int vecinos(char* a, int i, int j, int M, int N) {
     int neighborCounter = 0;
 
     findNeighbors(referencePoint, i, j, M, N, neighborsPerimeter);
+    //contabiliza la cantidad de vecinos vivos
     for (int pos = 0; pos < NEIGHBORS_PERIMETER_SIZE; pos++) {
         printf("%d\n", neighborsPerimeter[pos]);
         neighborCounter += *(neighborsPerimeter[pos] + a) - DEAD_CELL;
@@ -101,9 +104,4 @@ int main() {
     int liveNeighbors = vecinos(glider, 2, 3, rowsSize, columnsSize);
     printf("cantidad de vecinos vivos: ");
     printf("%d\n", liveNeighbors);
-    /*for (int i = 0; i < max_filas; i++) {
-        for (int j = 0; j < max_columnas; j++){
-            vecinos(glider, i, j, max_filas, max_columnas);
-		}
-    }*/
 }
