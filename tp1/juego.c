@@ -95,6 +95,7 @@ int vecinos(char* a, int i, int j, int M, int N) {
 
 }
 
+/*
 int main() {
 
     char glider[5][4] = {{'0','0','1','0'},{'1','0','1','0'},{'1','1','0','1'},{'0','1','1','0'},{'0','0','0','0'}};
@@ -105,3 +106,4 @@ int main() {
     printf("cantidad de vecinos vivos: ");
     printf("%d\n", liveNeighbors);
 }
+*/

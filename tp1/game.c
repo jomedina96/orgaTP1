@@ -13,6 +13,7 @@ void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize)
 	return;
 }
 
+/*
 int main(int argc, char* argv[]) {
     char glider[5][4] = {{'0','0','1','0'},{'1','0','1','0'},{'1','1','0','1'},{'0','1','1','0'},{'0','0','0','0'}};
     int rowsSize = (sizeof(glider)/sizeof(glider[0]));
@@ -22,3 +23,4 @@ int main(int argc, char* argv[]) {
     printf("cantidad de vecinos vivos: ");
     printf("%d\n", liveNeighbors);
 }
+*/
