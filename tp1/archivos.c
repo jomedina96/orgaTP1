@@ -1,4 +1,48 @@
 #include "archivos.h"
+void destroy_game(unsigned char** a, int M) {
+    for (int i = 0; i<M; i++) {
+        free(a[i]);
+    }
+    free(a);
+}
+
+unsigned char** create_game(int M, int N) {
+    unsigned char** a = malloc(sizeof(unsigned char*)*M);
+    if (!a) return NULL;
+    for (int i = 0; i < M; i++) {
+        a[i] = malloc(sizeof(unsigned char) * N);
+        if (!a[i]) {
+            destroy_game(a, i);
+            return NULL;
+        }
+        for (int j = 0; j<N; j++) {
+            a[i][j] = DEAD_CELL;
+        }
+    }
+    return a;
+}
+bool save_game(unsigned char** a, int M, int N, char* prefix_name, int step) {
+    char* file_name = malloc(sizeof(char)*(strlen(prefix_name)+9)); // "_000.PBM"
+    if (!file_name) return false;
+
+    sprintf(file_name, "%s_%03d.PBM", prefix_name, step);
+
+    FILE* output = fopen(file_name, "w");
+    free(file_name);
+    if (!output) return false;
+    // row = M
+    // col_number = N
+    fprintf(output, "P1\n%d %d", M, N);
+
+    for (int i = 0; i < M; i++) {
+        fputc('\n', output);
+        for (int j = 0; j < N; j++) {
+            fprintf(output, "%c ", a[i][j]);
+        }
+    }
+    fclose(output);
+    return true;
+}
 
 bool load_input(unsigned char** a, int M, int N, char* file_name) {
     FILE* input = fopen(file_name, "r+t");
