@@ -6,36 +6,36 @@
 #include "game.h"
 
 void show_help() {
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Uso:\n");
-    fprintf(stderr, "\tconway -h\n");
-    fprintf(stderr, "\tconway -V\n");
-    fprintf(stderr, "\tconway i M N inputfile [-o outputprefix]\n");
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Opciones:\n");
-    fprintf(stderr, "\t-h, --help \t Imprime este mensaje.\n");
-    fprintf(stderr, "\t-V, --version \t Da la versión del programa.\n");
-    fprintf(stderr, "\t-o, --outfile \t Prefijo de los archivos de salida.\n");
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Ejemplo:\n");
-    fprintf(stderr, "\tconway 10 20 20 glider -o estado\n");
-    fprintf(stderr, "\tRepresenta 10 iteraciones del Juego de la Vida en una matriz de 20x20, con un estado inicial tomado del archivo ‘‘glider’’.\n");
-    fprintf(stderr, "\tLos archivos de salida se llamarán estado_n.pbm.\n");
-    fprintf(stderr, "\tSi no se da un prefijo para los archivos de salida, el prefijo será el nombre del archivo de entrada.\n");
-    fprintf(stderr, "\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "Uso:\n");
+    fprintf(stdout, "\tconway -h\n");
+    fprintf(stdout, "\tconway -V\n");
+    fprintf(stdout, "\tconway i M N inputfile [-o outputprefix]\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "Opciones:\n");
+    fprintf(stdout, "\t-h, --help \t Imprime este mensaje.\n");
+    fprintf(stdout, "\t-V, --version \t Da la versión del programa.\n");
+    fprintf(stdout, "\t-o, --outfile \t Prefijo de los archivos de salida.\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "Ejemplo:\n");
+    fprintf(stdout, "\tconway 10 20 20 glider -o estado\n");
+    fprintf(stdout, "\tRepresenta 10 iteraciones del Juego de la Vida en una matriz de 20x20, con un estado inicial tomado del archivo ‘‘glider’’.\n");
+    fprintf(stdout, "\tLos archivos de salida se llamarán estado_n.pbm.\n");
+    fprintf(stdout, "\tSi no se da un prefijo para los archivos de salida, el prefijo será el nombre del archivo de entrada.\n");
+    fprintf(stdout, "\n");
 }
 
 void show_version() {
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Trabajo Práctico 1 - Organización de Computadoras 66.20\n");
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Versión: 0.01\n");
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Integrantes:\n");
-    fprintf(stderr, "\tChristian Florez\n");
-    fprintf(stderr, "\tJonathan Medina\n");
-    fprintf(stderr, "\tPablo Inoriza\n");
-    fprintf(stderr, "\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "Trabajo Práctico 1 - Organización de Computadoras 66.20\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "Versión: 0.01\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "Integrantes:\n");
+    fprintf(stdout, "\tChristian Florez\n");
+    fprintf(stdout, "\tJonathan Medina\n");
+    fprintf(stdout, "\tPablo Inoriza\n");
+    fprintf(stdout, "\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
             break;
         
         default:
-            fprintf(stderr, "Opción inválida. Asigne la opción -h para obtener ayuda.\n");
+            fprintf(stdout, "Opción inválida. Asigne la opción -h para obtener ayuda.\n");
             exit(1);
             break;
         }
@@ -74,14 +74,6 @@ int main(int argc, char* argv[]) {
     int arg_N = atoi(argv[5]);
     char* arg_namefile = argv[6];
 
-    //Esto es para probar la salida de cada parámetro (después se elimina)
-    fprintf(stdout, "Cantidad de iteraciones: %i \n", arg_i);
-    fprintf(stdout, "Cantidad de filas: %i \n", arg_M);
-    fprintf(stdout, "Cantidad de columnas: %i \n", arg_N);
-    fprintf(stdout, "Nombre de archivo de entrada: %s \n", arg_namefile);
-    fprintf(stdout, "Nombre de archivo de salida: %s \n", filenameo);
-
-    //Con los parámetros ya obtenidos, a continuación se puede invocar todas las funciones restantes...
     unsigned char** game = create_game(arg_M, arg_N);
     load_input(game, arg_M, arg_N, arg_namefile);
     if (load_input) {
