@@ -3,12 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define DEAD_CELL '0'
+#include "archivos.h"
 #define NEIGHBORS_PERIMETER_SIZE 8
 #define SIDES_SIZE 2
 
-int* findSides(int referencePoint, int column, int columnsSize, int* sides);
-int* findNeighbors(int referencePoint, int row, int column, int rowsSize, int columnsSize, int* neighborsPerimeter);
-int vecinos(char* a, int i, int j, int M, int N);
+unsigned int* findSides(unsigned int referencePoint, unsigned int column, unsigned int columnsSize, unsigned int* sides);
+unsigned int* findNeighbors(unsigned int referencePoint, unsigned int row, unsigned int column, unsigned int rowsSize, unsigned int columnsSize, unsigned int* neighborsPerimeter);
+unsigned int vecinos( unsigned char* a, unsigned int i, unsigned int j, unsigned int M, unsigned int N);
 
 #endif

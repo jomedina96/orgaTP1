@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include "archivos.h"
+#include "game.h"
 
 void show_help() {
     fprintf(stderr, "\n");
@@ -83,8 +84,14 @@ int main(int argc, char* argv[]) {
     //Con los parámetros ya obtenidos, a continuación se puede invocar todas las funciones restantes...
     unsigned char** game = create_game(arg_M, arg_N);
     load_input(game, arg_M, arg_N, arg_namefile);
-    save_game(game, arg_M, arg_N, filenameo, 1);
-    destroy_game(game, arg_M);
-
+    if (load_input) {
+        for (int i = 0; i < arg_i; i++) {
+            play_game(game, arg_M, arg_N);
+            save_game(game, arg_M, arg_N, filenameo, i);
+        }
+        destroy_game(game, arg_M);
+    } else {
+        return 1;
+    }
     return 0;
 }
