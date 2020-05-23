@@ -5,32 +5,32 @@
 #define NEIGHBORS_PERIMETER_SIZE 8
 #define SIDES_SIZE 2
 
-void imprimir(char* matriz, int filas, int columnas) /* Función donde se ejecuta la lógica del programa */
+void showNeighborhood(char* neighborhood, int rowsSize, int columnsSize) /* Función donde se ejecuta la lógica del programa */
 {
-	 for (int i = 0; i < filas; i++) {
-        for (int j = 0; j < columnas; j++){
-            printf("%c", *(matriz));
+	 for (int i = 0; i < rowsSize; i++) {
+        for (int j = 0; j < columnsSize; j++){
+            printf("%c", *(neighborhood));
 			printf(" ");
-            matriz = matriz + 1;
+            neighborhood = neighborhood + 1;
 		}
         printf("\n");
     }
 	return; /* sale de la función */
 }
 
-int* findSides(int pos_referencia, int col_actual, int max_col, int* sides) {
+int* findSides(int referencePoint, int column, int columnsSize, int* sides) {
     printf("Calculo sides \n");
     //int* sides = malloc(2*sizeof(int));
-    if (col_actual != 0 && col_actual != (max_col -1)) {
-        sides[0] = pos_referencia - 1;
-        sides[1] = pos_referencia + 1;
+    if (column != 0 && column != (columnsSize -1)) {
+        sides[0] = referencePoint - 1;
+        sides[1] = referencePoint + 1;
     } else {
-        if (col_actual == 0) {
-            sides[0] = pos_referencia + max_col - 1;
-            sides[1] = pos_referencia + 1;
+        if (column == 0) {
+            sides[0] = referencePoint + columnsSize - 1;
+            sides[1] = referencePoint + 1;
         } else {
-            sides[0] = pos_referencia - 1;
-            sides[1] = pos_referencia - max_col + 1;
+            sides[0] = referencePoint - 1;
+            sides[1] = referencePoint - columnsSize + 1;
         }
     }
     printf("%d\n", sides[0]);
@@ -39,31 +39,31 @@ int* findSides(int pos_referencia, int col_actual, int max_col, int* sides) {
 }
 
 
-int* findNeighbors(int pos_referencia, int pos_fil, int pos_col, int max_fila, int max_col, int* neighborsPerimeter) {
+int* findNeighbors(int referencePoint, int row, int column, int rowsSize, int columnsSize, int* neighborsPerimeter) {
     int top;
     int bottom;
     int centralSides[SIDES_SIZE];
     int topSides[SIDES_SIZE];
     int bottomSides[SIDES_SIZE];
 
-    findSides(pos_referencia, pos_col, max_col, centralSides);
+    findSides(referencePoint, column, columnsSize, centralSides);
     
-    if (pos_fil > 0 && pos_fil < max_fila - 1) {
-        top = pos_referencia - max_col;
-        findSides(top, pos_col, max_col, topSides);
-        bottom = pos_referencia + max_col;
-        findSides(bottom, pos_col, max_col, bottomSides);
+    if (row > 0 && row < rowsSize - 1) {
+        top = referencePoint - columnsSize;
+        findSides(top, column, columnsSize, topSides);
+        bottom = referencePoint + columnsSize;
+        findSides(bottom, column, columnsSize, bottomSides);
     } else {
-        if (pos_fil == 0) {
-            top = pos_referencia + max_col*(max_fila - 1);
-            findSides(top, pos_col, max_col, topSides);
-            bottom = pos_referencia + max_col;
-            findSides(bottom, pos_col, max_col, bottomSides);
+        if (row == 0) {
+            top = referencePoint + columnsSize*(rowsSize - 1);
+            findSides(top, column, columnsSize, topSides);
+            bottom = referencePoint + columnsSize;
+            findSides(bottom, column, columnsSize, bottomSides);
         } else {
-            top = pos_referencia - max_col;
-            findSides(top, pos_col, max_col, topSides);
-            bottom = pos_referencia - max_col * (max_fila - 1);
-            findSides(bottom, pos_col, max_col, bottomSides);
+            top = referencePoint - columnsSize;
+            findSides(top, column, columnsSize, topSides);
+            bottom = referencePoint - columnsSize * (rowsSize - 1);
+            findSides(bottom, column, columnsSize, bottomSides);
         }
     }
     neighborsPerimeter[0] = top;
@@ -79,28 +79,28 @@ int* findNeighbors(int pos_referencia, int pos_fil, int pos_col, int max_fila, i
 } 
 
 int vecinos(char* a, int i, int j, int M, int N) {
-    int pos_referencia =  i * N + j;
+    int referencePoint =  i * N + j;
     int neighborsPerimeter [NEIGHBORS_PERIMETER_SIZE];
-    int contador = 0;
+    int neighborCounter = 0;
 
-    findNeighbors(pos_referencia, i, j, M, N, neighborsPerimeter);
+    findNeighbors(referencePoint, i, j, M, N, neighborsPerimeter);
     for (int pos = 0; pos < NEIGHBORS_PERIMETER_SIZE; pos++) {
         printf("%d\n", neighborsPerimeter[pos]);
-        contador += *(neighborsPerimeter[pos] + a) - DEAD_CELL;
+        neighborCounter += *(neighborsPerimeter[pos] + a) - DEAD_CELL;
     }
-    return contador; 
+    return neighborCounter; 
 
 }
 
 int main() {
 
     char glider[5][4] = {{'0','0','1','0'},{'1','0','1','0'},{'1','1','0','1'},{'0','1','1','0'},{'0','0','0','0'}};
-    int max_filas = (sizeof(glider)/sizeof(glider[0]));
-    int max_columnas = (sizeof(glider[0])/sizeof(glider[0][0]));
-    imprimir(glider, max_filas, max_columnas);
-    int result = vecinos(glider, 2, 3, max_filas, max_columnas);
+    int rowsSize = (sizeof(glider)/sizeof(glider[0]));
+    int columnsSize = (sizeof(glider[0])/sizeof(glider[0][0]));
+    showNeighborhood(glider, rowsSize, columnsSize);
+    int liveNeighbors = vecinos(glider, 2, 3, rowsSize, columnsSize);
     printf("cantidad de vecinos vivos: ");
-    printf("%d\n", result);
+    printf("%d\n", liveNeighbors);
     /*for (int i = 0; i < max_filas; i++) {
         for (int j = 0; j < max_columnas; j++){
             vecinos(glider, i, j, max_filas, max_columnas);
