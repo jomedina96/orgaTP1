@@ -2,6 +2,7 @@
 #define __GAME_H__
 #include "neighbors.h"
 #include "archivos.h"
+#include "constants.h"
 
 void show_neighborhood(unsigned char* neighborhood, unsigned int rowsSize, unsigned int columnsSize);
 unsigned char evaluate_conditions(unsigned int alive_neighbors, unsigned char my_state);

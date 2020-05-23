@@ -6,9 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "constants.h"
 
-#define ALIVE_CELL '1'
-#define DEAD_CELL '0'
 #define BUFFER_ROW_MAX_SIZE 10
 #define BUFFER_COL_MAX_SIZE 10
 

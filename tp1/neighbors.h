@@ -3,7 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "archivos.h"
+#include "constants.h"
+
 #define NEIGHBORS_PERIMETER_SIZE 8
 #define SIDES_SIZE 2
 
