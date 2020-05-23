@@ -75,11 +75,28 @@ int main(int argc, char* argv[]) {
     char* arg_namefile = argv[6];
 
     unsigned char* game = create_matrix_with_dead_cells(arg_M, arg_N);
-    load_input(game, arg_M, arg_N, arg_namefile);
+    if (!game) {
+        return 1;
+    }
+    bool couldLoadInput = load_input(game, arg_M, arg_N, arg_namefile);
 
+    if (!couldLoadInput) {
+        fprintf(stderr, "Couldn't load the input\n");
+        return 1;
+    }
     for (int i = 0; i < arg_i; i++) {
-            play_game(game, arg_M, arg_N);
-            save_game(game, arg_M, arg_N, filenameo, i);
+            bool couldPlay = play_game(game, arg_M, arg_N);
+            if (!couldPlay) {
+                fprintf(stderr, "Couldn't play the game\n");
+                destroy_game(game);
+                return 1;
+            }
+            bool couldSave = save_game(game, arg_M, arg_N, filenameo, i);
+            if (!couldSave) {
+                fprintf(stderr, "Couldn't save the game\n");
+                destroy_game(game);
+                return 1;
+            }
     }
     printf("Listo\n");
     destroy_game(game);

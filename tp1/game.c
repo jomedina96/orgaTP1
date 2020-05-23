@@ -28,9 +28,11 @@ unsigned char evaluate_conditions(unsigned int alive_neighbors, unsigned char my
 } 
 
 
-void play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_size) {
+bool play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_size) {
     unsigned char *matrix = create_matrix_with_dead_cells(rows_size, columns_size);
-
+    if (!matrix) {
+        return false;
+    }
     for (unsigned int i = 0; i < rows_size; i++) {
         for (unsigned int j = 0; j < columns_size; j++) {
             unsigned int neighbor = vecinos(a, i, j, rows_size, columns_size);
@@ -40,6 +42,7 @@ void play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_si
     }
     copy_matrix(a, matrix, rows_size, columns_size);
     destroy_game(matrix);
+    return true;
 }
 
 void copy_matrix(unsigned char *a, unsigned char *matrix, unsigned int rows_size, unsigned int columns_size) {

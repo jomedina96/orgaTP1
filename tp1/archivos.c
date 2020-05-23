@@ -5,7 +5,10 @@ void destroy_game(unsigned char* a) {
 
 unsigned char* create_matrix_with_dead_cells(unsigned int M, unsigned int N) {
     unsigned char* a = malloc(sizeof(unsigned char*)*M*N);
-    if (!a) return NULL;
+    if (!a) {
+        fprintf(stderr, "Couldnt create a matrix with dead cells\n");
+        return NULL;
+    }
     for (int i = 0; i < M*N; i++) {
         a[i] = DEAD_CELL;
     }

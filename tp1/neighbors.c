@@ -2,7 +2,6 @@
 
 //Funcion que busque los laterales dado un punto
 void findSides(unsigned int referencePoint,unsigned int column,unsigned int columnsSize,unsigned int* sides) {
-    //printf("Calculo sides \n");
     //Analiza que no este en el borde derecho o izquierdo
     if (column != 0 && column != (columnsSize -1)) {
         sides[0] = referencePoint - 1;
@@ -68,7 +67,6 @@ unsigned int vecinos(unsigned char* a,unsigned int i,unsigned int j,unsigned int
     findNeighbors(referencePoint, i, j, M, N, neighborsPerimeter);
     //contabiliza la cantidad de vecinos vivos
     for (int pos = 0; pos < NEIGHBORS_PERIMETER_SIZE; pos++) {
-        //printf("%d\n", neighborsPerimeter[pos]);
         unsigned int isAlive = a[neighborsPerimeter[pos]] == ALIVE_CELL? 1 : 0;
         neighborCounter += isAlive;
     }
