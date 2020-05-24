@@ -30,8 +30,8 @@ bool save_game(unsigned char *a, unsigned int M, unsigned int N, char* prefix_na
     for (int i = 0; i < M; i++) {
         fputc('\n', output);
         for (int j = 0; j < N; j++) {
-            unsigned int referencePoint =  i * N + j;
-            fprintf(output, "%c ", a[referencePoint]);
+            unsigned int reference_point = i * N + j;
+            fprintf(output, "%c ", a[reference_point]);
         }
     }
     fclose(output);
@@ -119,8 +119,8 @@ bool validate_and_process_row(unsigned char *a, unsigned int M, unsigned int N, 
 
     if ((row_number>M) || (col_number>N)) return false;
 
-    unsigned int referencePoint =  row_number * N + col_number;
-    a[referencePoint] = ALIVE_CELL;
+    unsigned int reference_point = row_number * N + col_number;
+    a[reference_point] = ALIVE_CELL;
 
     return true;
 }

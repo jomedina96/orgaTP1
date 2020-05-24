@@ -1,8 +1,8 @@
 #include "game.h"
 
-void show_neighborhood(unsigned char* neighborhood, unsigned int rowsSize, unsigned int columnsSize) {
-	 for (int i = 0; i < rowsSize; i++) {
-        for (int j = 0; j < columnsSize; j++){
+void show_neighborhood(unsigned char* neighborhood, unsigned int rows_size, unsigned int columns_size) {
+	 for (int i = 0; i < rows_size; i++) {
+        for (int j = 0; j < columns_size; j++){
             printf("%c ", *(neighborhood));
 			neighborhood++;
         }
@@ -36,8 +36,8 @@ bool play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_si
     for (unsigned int i = 0; i < rows_size; i++) {
         for (unsigned int j = 0; j < columns_size; j++) {
             unsigned int neighbor = vecinos(a, i, j, rows_size, columns_size);
-            unsigned int referencePoint =  i * columns_size + j;
-            matrix[referencePoint] = evaluate_conditions(neighbor, a[referencePoint]);
+            unsigned int reference_point = i * columns_size + j;
+            matrix[reference_point] = evaluate_conditions(neighbor, a[reference_point]);
 		}
     }
     copy_matrix(a, matrix, rows_size, columns_size);
@@ -48,8 +48,8 @@ bool play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_si
 void copy_matrix(unsigned char *a, unsigned char *matrix, unsigned int rows_size, unsigned int columns_size) {
     for (unsigned int i = 0; i < rows_size; i++) {
         for (unsigned int j = 0; j < columns_size; j++) {
-            unsigned int referencePoint =  i * columns_size + j;
-            a[referencePoint] = matrix[referencePoint];
+            unsigned int reference_point = i * columns_size + j;
+            a[reference_point] = matrix[reference_point];
         }
     }
 }
