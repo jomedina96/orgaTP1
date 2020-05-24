@@ -8,8 +8,8 @@
 #define NEIGHBORS_PERIMETER_SIZE 8
 #define SIDES_SIZE 2
 
-void findSides(unsigned int referencePoint, unsigned int column, unsigned int columnsSize, unsigned int* sides);
-void findNeighbors(unsigned int referencePoint, unsigned int row, unsigned int column, unsigned int rowsSize, unsigned int columnsSize, unsigned int* neighborsPerimeter);
+void find_sides(unsigned int reference_point, unsigned int column, unsigned int columns_size, unsigned int* sides);
+void find_neighbors(unsigned int reference_point, unsigned int row, unsigned int column, unsigned int rowsSize, unsigned int columns_size, unsigned int* neighbors_perimeter);
 unsigned int vecinos( unsigned char* a, unsigned int i, unsigned int j, unsigned int M, unsigned int N);
 
 #endif
