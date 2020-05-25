@@ -9,10 +9,10 @@ OBJ = main.o game.o archivos.o neighbors.o
 FNAME = conway
 
 #Rules
-asm: $(SRC) $(SRC_ASM)
+tp.mips: $(SRC) $(SRC_ASM)
 	$(CC) $(CFLAGS) $(CFLAGS_ASM) -o $(FNAME) $(SRC) $(SRC_ASM)
 
-c: $(SRC) $(SRC_C)
+tp.c: $(SRC) $(SRC_C)
 	$(CC) $(CFLAGS) -o $(FNAME) $(SRC) $(SRC_C)
 
 clean:
