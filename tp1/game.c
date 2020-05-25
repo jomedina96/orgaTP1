@@ -1,17 +1,6 @@
 #include "game.h"
 
-void show_neighborhood(unsigned char* neighborhood, unsigned int rows_size, unsigned int columns_size) {
-	 for (int i = 0; i < rows_size; i++) {
-        for (int j = 0; j < columns_size; j++){
-            printf("%c ", *(neighborhood));
-			neighborhood++;
-        }
-        printf("\n");
-    }
-}
-
 unsigned char evaluate_conditions(unsigned int alive_neighbors, unsigned char my_state) {
-    
     if (alive_neighbors < 2 || alive_neighbors > 3) {
         return DEAD_CELL;
     }
@@ -43,6 +32,18 @@ bool play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_si
     copy_matrix(a, matrix, rows_size, columns_size);
     destroy_game(matrix);
     return true;
+}
+
+unsigned char* create_matrix_with_dead_cells(unsigned int M, unsigned int N) {
+    unsigned char* a = malloc(sizeof(unsigned char)*M*N);
+    if (!a) {
+        fprintf(stderr, "Couldnt create a matrix with dead cells\n");
+        return NULL;
+    }
+    for (int i = 0; i < M*N; i++) {
+        a[i] = DEAD_CELL;
+    }
+    return a;
 }
 
 void copy_matrix(unsigned char *a, unsigned char *matrix, unsigned int rows_size, unsigned int columns_size) {

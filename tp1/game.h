@@ -4,8 +4,8 @@
 #include "archivos.h"
 #include "constants.h"
 
-void show_neighborhood(unsigned char* neighborhood, unsigned int rows_size, unsigned int columns_size);
 unsigned char evaluate_conditions(unsigned int alive_neighbors, unsigned char my_state);
 bool play_game(unsigned char *a, unsigned int rows_size, unsigned int columns_size);
+unsigned char* create_matrix_with_dead_cells(unsigned int M, unsigned int N);
 void copy_matrix(unsigned char *a, unsigned char *matrix, unsigned int rows_size, unsigned int columns_size);
 #endif
