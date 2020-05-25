@@ -4,6 +4,6 @@
 
 #ifndef TP1_CONSTANTS_H
 #define TP1_CONSTANTS_H
-#define ALIVE_CELL '1'
-#define DEAD_CELL '0'
+#define ALIVE_CELL '0'
+#define DEAD_CELL '1'
 #endif //TP1_CONSTANTS_H
