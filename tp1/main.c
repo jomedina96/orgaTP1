@@ -51,20 +51,17 @@ int main(int argc, char* argv[]) {
         case 'o': /* outfile */
             filenameo = optarg;
             break;
-
         case 'h': /* help */
             show_help();
-            exit(0);
+            return 0;
             break;
-        
         case 'V': /* version */
             show_version();
-            exit(0);
+            return 0;
             break;
-        
         default:
             fprintf(stdout, "Opción inválida. Asigne la opción -h para obtener ayuda.\n");
-            exit(1);
+            return 1;
             break;
         }
     }
@@ -82,6 +79,7 @@ int main(int argc, char* argv[]) {
 
     if (!couldLoadInput) {
         fprintf(stderr, "Couldn't load the input\n");
+        destroy_game(game);
         return 1;
     }
     for (int i = 0; i < arg_i; i++) {
