@@ -1,8 +1,7 @@
 #include <regdef.h>
 
-#define NEIGHBORS_PERIMETER_SIZE 8
-#define SIDES_SIZE 2
-#define ALIVE_CELL 1
+#define NEIGHBORS_PERIMETER_SIZE 32
+#define SIDES_SIZE 8
 
 .data
 centralSides:           .space SIDES_SIZE
@@ -16,6 +15,10 @@ neighborsPerimeter:     .space NEIGHBORS_PERIMETER_SIZE
 .ent vecinos
 
 vecinos:
+    .frame sp, 48, ra
+    .set noreorder
+    .cpload	t9
+    .set reorder
     subu sp, sp, 48                                     # ----- Building stack -----
     sw ra, 40(sp)
     sw fp, 36(sp)
@@ -36,18 +39,19 @@ vecinos:
     jal findNeighbors
     li t0, 0                                            # t0 = neighborCounter
     li t1, 0                                            # t1 = position
-for:                                                    # ----- Contabiliza la cantidad de vecinos vivos -----
-    bge t1, NEIGHBORS_PERIMETER_SIZE, exitVecinos
     la t2, neighborsPerimeter                           # t2 = neighborsPerimeter
     lw t3, 0(fp)                                        # t3 = a
-    mul t4, t1, 4                                       # t4 = position*4 (offset)
-    add t4, t2, t4
+for:                                                    # ----- Contabiliza la cantidad de vecinos vivos -----
+    bge t1, NEIGHBORS_PERIMETER_SIZE, exitVecinos
+    add t4, t2, t1
     lw t4, (t4)                                         # t4 = neighborsPerimeter[position]
-    mul t4, t4, 4
     add t4, t3, t4
-    lw t4, (t4)
-    add t0, t0, t4
-    addu t1, t1, 1                                      # t1 = position + 1
+    lb t4, (t4)                                         # t4 = 48 ('0' en ascii) o 49 ('1' en ascii)
+    bne t4, 49, nextStep                                # Si t4 tiene 49, le sumo 1 al neighborCounter
+    addu t0, t0, 1
+nextStep:
+    addu t1, t1, 4                                      # t1 = position + 1
+    b for
 exitVecinos:
     move v0, t0
     lw ra, 40(sp)                                       # Disarming stack
@@ -68,6 +72,10 @@ exitVecinos:
 .ent findNeighbors
 
 findNeighbors:                      # ----- Función que se encarga de encontrar a todos los vecinos del perímetro -----
+    .frame sp, 56, ra
+    .set noreorder
+    .cpload	t9
+    .set reorder
     subu sp, sp, 56                 # ----- Building stack -----
     sw ra, 48(sp)
     sw fp, 44(sp)
@@ -115,7 +123,7 @@ topEdge:                            # ----- En el borde superior -----
     add t3, a0, t1                  # t3 = top
     sw t1, 32(fp)
     add t4, a0, t0                  # t4 = bottom
-    sw t2, 28(fp)
+    sw t4, 28(fp)
     move a0, t3
     move a2, t0
     la a3, topSides
@@ -132,7 +140,7 @@ bottomEdge:                         # ----- En el borde inferior -----
     sub t3, a0, t0                  # t3 = top
     sw t1, 32(fp)
     sub t4, a0, t1                  # t4 = bottom
-    sw t2, 28(fp)
+    sw t4, 28(fp)
     move a0, t3
     move a2, t0
     la a3, topSides
@@ -141,26 +149,26 @@ bottomEdge:                         # ----- En el borde inferior -----
     la a3, bottomSides
     jal findSides
 exitFindNeighbors:
-    lw t0, 76(fp)                   # t0 = neighborsPerimeter
+    la t0, neighborsPerimeter       # t0 = neighborsPerimeter
     lw t1, 32(fp)                   # t1 = top
     sw t1, 0(t0)
     lw t1, 28(fp)                   # t1 = bottom
     sw t1, 4(t0)
     la t1, centralSides
     lw t2, 0(t1)
-    sw t2, 8(fp)
+    sw t2, 8(t0)
     lw t2, 4(t1)
-    sw t2, 12(fp)
+    sw t2, 12(t0)
     la t1, topSides
     lw t2, 0(t1)
-    sw t2, 16(fp)
+    sw t2, 16(t0)
     lw t2, 4(t1)
-    sw t2, 20(fp)
+    sw t2, 20(t0)
     la t1, bottomSides
     lw t2, 0(t1)
-    sw t2, 24(fp)
+    sw t2, 24(t0)
     lw t2, 4(t1)
-    sw t2, 28(fp)
+    sw t2, 28(t0)
     lw ra, 48(sp)                   # Disarming stack
     lw fp, 44(sp)
     lw gp, 40(sp)
@@ -179,6 +187,10 @@ exitFindNeighbors:
 .ent findSides
 
 findSides:                          # ----- Funcion que busque los laterales dado un punto -----
+    .frame sp, 8, ra
+    .set noreorder
+    .cpload	t9
+    .set reorder
     subu sp, sp, 8                  # ----- Building stack -----
     sw fp, 4(sp)
     .cprestore 0                    # sw gp, 0(sp)
