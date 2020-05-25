@@ -47,7 +47,7 @@ for:                                                    # ----- Contabiliza la c
     lw t4, (t4)                                         # t4 = neighborsPerimeter[position]
     add t4, t3, t4
     lb t4, (t4)                                         # t4 = 48 ('0' en ascii) o 49 ('1' en ascii)
-    bne t4, 49, nextStep                                # Si t4 tiene 49, le sumo 1 al neighborCounter
+    bne t4, 48, nextStep                                # Si t4 tiene 48, le sumo 1 al neighborCounter
     addu t0, t0, 1
 nextStep:
     addu t1, t1, 4                                      # t1 = position + 1
