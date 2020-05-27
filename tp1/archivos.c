@@ -86,16 +86,7 @@ bool process_file(unsigned char *a, unsigned int M, unsigned int N, char* buffer
         }
         idx_file++;
     }
-/*  TODO: Decidir que hacer si tenemos un archivo de una sola linea sin \n
-    Decidir que hacer si tenemos un archivo que termine con \0 la ultima linea, sin \n
-    En los ejemplos todos tienen un \n al final (bash command: xxd)
 
-    if (idx_file > 0) {
-        buffer_row[idx_row] = '\0';
-        buffer_col[idx_col] = '\0';
-        return validate_and_process_row(a, M, N, buffer_row, buffer_col);
-    }
-*/
     return true;
 }
 
