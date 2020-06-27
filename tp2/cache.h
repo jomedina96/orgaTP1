@@ -4,10 +4,6 @@
 #define CACHE_SIZE 128
 #define MAIN_MEMORY_SIZE 512
 
-struct bloqueCache;
-struct conjunto;
-struct cache;
-
 typedef unsigned char[CACHE_SIZE] bloqueDeMemoria_t;
 
 typedef struct memoriaPrincipal {
