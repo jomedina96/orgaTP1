@@ -6,10 +6,16 @@ struct bloqueCache;
 struct conjunto;
 struct cache;
 
+typedef unsigned char[128] bloqueDeMemoria_t;
+
+typedef struct memoriaPrincipal {
+    bloqueDeMemoria_t memoria[512];
+} memoriaPrincipal_t;
+
 typedef struct bloqueCache {
     int V;
     int tag;
-    unsigned char[128] datos;
+    bloqueDeMemoria_t datos;
 } bloqueCache_t;
 
 typedef struct conjunto {
