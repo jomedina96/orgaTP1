@@ -1,8 +1,9 @@
 #include "lista.h"
+#include "cache.h"
 #include <stdlib.h>
 
 typedef struct nodo{
-	void* dato;
+    bloqueCache_t* dato;
 	struct nodo* prox;
 } nodo_t;
 

@@ -1,10 +1,10 @@
 #ifndef TP2_CACHE_H
 #define TP2_CACHE_H
 #include "lista.h"
-#define CACHE_SIZE 128
+#define CACHE_BLOCK_SIZE 128
 #define MAIN_MEMORY_SIZE 512
 
-typedef unsigned char[CACHE_SIZE] bloqueDeMemoria_t;
+typedef unsigned char bloqueDeMemoria_t[CACHE_BLOCK_SIZE];
 
 typedef struct memoriaPrincipal {
     bloqueDeMemoria_t memoria[MAIN_MEMORY_SIZE];
