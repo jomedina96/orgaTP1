@@ -12,8 +12,8 @@ int compare_tag(unsigned int tag, unsigned int set) {
 
     int way = 0;
     nodo_t* nodo = conjunto.listaEnlazada->prim;
-    while (nodo != NULL || nodo->prox != NULL) {
-        if (nodo->dato->tag == tag) {
+    while (nodo != NULL) {
+        if (nodo->dato->tag == tag && nodo->dato->V == 1) {
             return way;
         }
         way++;
@@ -35,6 +35,10 @@ unsigned int select_oldest(unsigned int setnum) {
     }
 
     return conjunto.listaEnlazada->len - 1;
+}
+
+void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
+    
 }
 
 unsigned char read_byte(unsigned int address) {
