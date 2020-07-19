@@ -44,9 +44,9 @@ void init() {
     for (int i=0; i<4; i++) {
         way_t* way = malloc(sizeof(way_t));
         for (int j=0; j<8; j++) {
-            conjunto_t* conjunto = malloc(sizeof(conjunto_t));
+            conjunto_t *conjunto = malloc(sizeof(conjunto_t));
             conjunto->listaEnlazada = lista_crear();
-            way->conjuntos = conjunto;
+            way->conjuntos[j] = conjunto;
         }
         associative_cache.ways[i] = way;
     }
