@@ -38,3 +38,20 @@ void write_byte(unsigned int address, unsigned char value) {
     memoriaPrincipal.memoria[blocknum] = value;
 }
 
+void init() {
+    associative_cache.amount_access = 0;
+    associative_cache.amount_misses = 0;
+    for (int i=0; i<4; i++) {
+        way_t* way = malloc(sizeof(way_t));
+        for (int j=0; j<8; j++) {
+            conjunto_t* conjunto = malloc(sizeof(conjunto_t));
+            conjunto->listaEnlazada = lista_crear();
+            way->conjuntos = conjunto;
+        }
+        associative_cache.ways[i] = way;
+    }
+
+    for (int i=0; i<MAIN_MEMORY_SIZE; i++) {
+        memoriaPrincipal.memoria[i] = malloc(sizeof(bloqueDeMemoria_t));
+    }
+}
