@@ -6,12 +6,10 @@
 #include "binario.h"
 
 int compare_tag(unsigned int tag, unsigned int set) {
-    //Esto debería cargarse en una variable global
-    cache_t memoriaCache;
-    conjunto_t conjunto = memoriaCache.conjuntos[set];
+    conjunto_t* conjunto = associative_cache.conjuntos[set];
 
     int way = 0;
-    nodo_t* nodo = conjunto.listaEnlazada->prim;
+    nodo_t* nodo = conjunto->listaEnlazada->prim;
     while (nodo != NULL) {
         if (nodo->dato->tag == tag && nodo->dato->V == 1) {
             return way;
@@ -24,21 +22,19 @@ int compare_tag(unsigned int tag, unsigned int set) {
 }
 
 unsigned int select_oldest(unsigned int setnum) {
-    //Esto debería cargarse en una variable global
-    cache_t memoriaCache;
-    conjunto_t conjunto = memoriaCache.conjuntos[setnum];
+    conjunto_t* conjunto = associative_cache.conjuntos[setnum];
 
-    nodo_t* nodo = conjunto.listaEnlazada->prim;
-    for (int way = 0; way < conjunto.listaEnlazada->len; way++) {
+    nodo_t* nodo = conjunto->listaEnlazada->prim;
+    for (int way = 0; way < conjunto->listaEnlazada->len; way++) {
         if (nodo == NULL) return way;
         nodo = nodo->prox;
     }
 
-    return conjunto.listaEnlazada->len - 1;
+    return conjunto->listaEnlazada->len - 1;
 }
 
 void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
-    
+    //bloqueDeMemoria_t data = memoriaPrincipal.memoria[blocknum];
 }
 
 unsigned char read_byte(unsigned int address) {
@@ -55,10 +51,19 @@ unsigned char read_byte(unsigned int address) {
         blocknum = (tag << 3) + set;
         read_tocache(blocknum, way, set);
     }
-    struct way current_way = associative_cache.vias[way];
-    struct conjunto current_set = current_way.conjuntos[set];
+    conjunto_t* conjunto = associative_cache.conjuntos[set];
+    nodo_t* nodo = conjunto->listaEnlazada->prim;
 
-    return current_set[offset];
+    for (int i=0; i <= way; i++) {
+        nodo = nodo->prox;
+    }
+
+    //struct way current_way = associative_cache.vias[way];
+    //struct conjunto current_set = current_way.conjuntos[set];
+
+    //return current_set[offset];
+
+    return nodo->dato->datos[offset];
 }
 
 void write_byte(unsigned int address, unsigned char value) {
@@ -70,10 +75,10 @@ void write_byte(unsigned int address, unsigned char value) {
     tag = get_tag(address);
     way = compare_tag(tag, set);
     if ( way != -1) {
-        write_tocache(address, value)
+        write_tocache(address, value);
     }
     blocknum = (tag << 3) + set;
-    memoriaPrincipal.memoria[blocknum] = value;
+    memoriaPrincipal.memoria[blocknum][offset] = value;
 }
 
 void init() {

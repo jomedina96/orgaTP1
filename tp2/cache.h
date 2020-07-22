@@ -8,7 +8,7 @@
 typedef unsigned char bloqueDeMemoria_t[CACHE_BLOCK_SIZE];
 
 typedef struct memoriaPrincipal {
-    bloqueDeMemoria_t* memoria[MAIN_MEMORY_SIZE];
+    bloqueDeMemoria_t memoria[MAIN_MEMORY_SIZE];
 } memoriaPrincipal_t;
 
 typedef struct bloqueCache {
@@ -21,14 +21,15 @@ typedef struct conjunto {
     lista_t* listaEnlazada;
 } conjunto_t;
 
-typedef struct way {
-    conjunto_t* conjuntos[8];
-} way_t;
+//typedef struct way {
+//    conjunto_t* conjuntos[8];
+//} way_t;
 
 typedef struct cache {
     int amount_access;
     int amount_misses;
-    way_t* ways[4];
+    //way_t* ways[4];
+    conjunto_t* conjuntos[8];
 } cache_t;
 
 cache_t associative_cache;
