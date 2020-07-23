@@ -13,12 +13,6 @@ struct lista{
 	size_t len;
 };
 
-struct lista_iter{
-	nodo_t* ant;
-	nodo_t* act;
-	lista_t* lista;
-};
-
 nodo_t* crear_nodo(bloqueCache_t* valor){
 	nodo_t* nodo = malloc(sizeof(nodo_t));
 	if (!nodo) return NULL;

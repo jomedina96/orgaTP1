@@ -6,9 +6,7 @@
 #include "cache.h"
 
 struct lista;
-struct lista_iter;
 typedef struct lista lista_t;
-typedef struct lista_iter lista_iter_t;
 
 //PRIMITIVAS LISTA ENLAZADA
 
