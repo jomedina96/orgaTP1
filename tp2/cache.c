@@ -58,6 +58,8 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
     nodo->dato->datos = memoriaPrincipal.memoria[blocknum];
     nodo->dato->tag = get_tag(blocknum);
     nodo->dato->V = 1;
+    associative_cache.amount_access++;
+    associative_cache.amount_misses++;
 }
 
 unsigned char read_byte(unsigned int address) {
@@ -129,7 +131,18 @@ void write_tocache(unsigned int address, unsigned char value) {
     set = find_set(address);
     tag = get_tag(address);
 
-    associative_cache.conjuntos[set]
+    nodo_t* way = associative_cache.conjuntos[set]->listaEnlazada->prim;
+
+    while (way) {
+        if (way->dato->V == 1 && way->dato->tag == tag) {
+            *(way->dato->datos)[offset] = value;
+            break;
+        }
+        way = way->prox;
+    }
+
+    if (!way) associative_cache.amount_misses++;
+    associative_cache.amount_access++;
 }
 
 // -----------------------------
