@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "archivos.h"
-#include "binario.h"
 #include "cache.h"
 
 int main(int argc, char* argv[]) {
