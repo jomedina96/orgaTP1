@@ -24,9 +24,16 @@ int compare_tag(unsigned int tag, unsigned int set) {
 
 unsigned int select_oldest(unsigned int setnum) {
     conjunto_t* conjunto = associative_cache.conjuntos[setnum];
-    if (lista_esta_vacia(conjunto->listaEnlazada)) return 0;
+    int way = 0;
+    for (int i = 0; i < AMOUNT_WAY; i++) {
+        bloqueCache_t* bloqueViejo = conjunto->bloqueCache[way];
+        bloqueCache_t* bloqueNuevo = conjunto->bloqueCache[i];
 
-    return lista_largo(conjunto->listaEnlazada) - 1;
+        if ((bloqueNuevo->V == VALID_BIT) && (bloqueNuevo->ultimamente_usado < bloqueViejo->ultimamente_usado)) {
+            way = i;
+        }
+    }
+    return way;
 }
 
 void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
@@ -96,7 +103,7 @@ void init() {
     for (int i=0; i<AMOUNT_SETS; i++) {
         conjunto_t *conjunto = malloc(sizeof(conjunto_t));
         conjunto->contador = 0;
-        for (int j=0; j<AMOUNT_WAY; j++) {
+        for (int j = 0; j < AMOUNT_WAY; j++) {
             conjunto->bloqueCache[j] = malloc(sizeof(bloqueCache_t));
             conjunto->bloqueCache[j]->V = INVALID_BIT;
             conjunto->bloqueCache[j]->ultimamente_usado = 0;
