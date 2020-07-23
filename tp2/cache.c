@@ -35,15 +35,15 @@ unsigned int select_oldest(unsigned int setnum) {
 
 void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
     conjunto_t* conjunto = associative_cache.conjuntos[set];
-    nodo_t* nodo = conjunto->listaEnlazada->prim;
 
-    for (int i=0; i <= way; i++) {
-        nodo = nodo->prox;
-    }
+    bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
 
-    nodo->dato->datos = memoriaPrincipal.memoria[blocknum];
-    nodo->dato->tag = get_tag(blocknum);
-    nodo->dato->V = 1;
+    bloqueCache->datos = memoriaPrincipal.memoria[blocknum];
+    bloqueCache->tag = get_tag(blocknum);
+    bloqueCache->V = VALID_BIT;
+    bloqueCache->ultimamente_usado = conjunto->contador;
+
+    conjunto->contador++;
 
     associative_cache.amount_access++;
     associative_cache.amount_misses++;
@@ -103,7 +103,7 @@ void init() {
         for (int j = 0; j < AMOUNT_WAY; j++) {
             conjunto->bloqueCache[j] = malloc(sizeof(bloqueCache_t));
             conjunto->bloqueCache[j]->V = INVALID_BIT;
-            conjunto->bloqueCache[j]->ultimamente_usado = 0;
+            conjunto->bloqueCache[j]->ultimamente_usado = -1;
             conjunto->bloqueCache[j]->datos = NULL;
         }
         associative_cache.conjuntos[i] = conjunto;
@@ -126,16 +126,22 @@ void write_tocache(unsigned int address, unsigned char value) {
     set = find_set(address);
     tag = get_tag(address);
 
-    nodo_t* way = associative_cache.conjuntos[set]->listaEnlazada->prim;
+    conjunto_t* conjunto = associative_cache.conjuntos[set];
+    bool couldFoundWay = false;
 
-    while (way) {
-        if (way->dato->V == 1 && way->dato->tag == tag) {
-            *(way->dato->datos)[offset] = value;
+    for (int way = 0; way < AMOUNT_WAY; way++) {
+        bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
+
+        if ((bloqueCache->V == VALID_BIT) && (bloqueCache->tag == tag)) {
+            *(bloqueCache->datos)[offset] = value;
+            couldFoundWay = true;
+            bloqueCache->ultimamente_usado = conjunto->contador;
+            conjunto->contador++;
             break;
         }
-        way = way->prox;
+
     }
 
-    if (!way) associative_cache.amount_misses++;
+    if (!couldFoundWay) associative_cache.amount_misses++;
     associative_cache.amount_access++;
 }
