@@ -34,7 +34,15 @@ unsigned int select_oldest(unsigned int setnum) {
 }
 
 void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
-    //bloqueDeMemoria_t data = memoriaPrincipal.memoria[blocknum];
+    conjunto_t* conjunto = associative_cache.conjuntos[set];
+    nodo_t* nodo = conjunto->listaEnlazada->prim;
+
+    for (int i=0; i <= way; i++) {
+        nodo = nodo->prox;
+    }
+
+    //Hay que corregir esta asignación
+    nodo->dato->datos = memoriaPrincipal.memoria[blocknum];
 }
 
 unsigned char read_byte(unsigned int address) {
