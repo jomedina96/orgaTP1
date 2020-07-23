@@ -53,7 +53,6 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
         nodo = nodo->prox;
     }
 
-    //Hay que corregir esta asignación
     nodo->dato->datos = memoriaPrincipal.memoria[blocknum];
 }
 
@@ -82,7 +81,7 @@ unsigned char read_byte(unsigned int address) {
 
     //return current_set[offset];
 
-    return nodo->dato->datos[offset];
+    return *(nodo->dato->datos)[offset];
 }
 
 void write_byte(unsigned int address, unsigned char value) {
@@ -97,7 +96,7 @@ void write_byte(unsigned int address, unsigned char value) {
         write_tocache(address, value);
     }
     blocknum = (tag << 3) + set;
-    memoriaPrincipal.memoria[blocknum][offset] = value;
+    *(memoriaPrincipal.memoria)[blocknum][offset] = value;
 }
 
 void init() {

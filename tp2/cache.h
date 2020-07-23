@@ -15,11 +15,11 @@ typedef unsigned char bloqueDeMemoria_t[CACHE_BLOCK_SIZE];
 typedef struct bloqueCache {
     int V;
     int tag;
-    bloqueDeMemoria_t datos;
+    bloqueDeMemoria_t* datos;
 } bloqueCache_t;
 
 typedef struct memoriaPrincipal {
-    bloqueDeMemoria_t memoria[MAIN_MEMORY_SIZE];
+    bloqueDeMemoria_t* memoria[MAIN_MEMORY_SIZE];
 } memoriaPrincipal_t;
 
 
@@ -47,12 +47,11 @@ float get_miss_rate();
 int compare_tag(unsigned int tag, unsigned int set);
 unsigned int select_oldest(unsigned int setnum);
 void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set);
+void write_tocache(unsigned int address, unsigned char value);
 
 void init();
 
 // ------------------------------------
-
-//PRIMITIVAS LISTA ENLAZADA
 
 // Crea una lista enlazada.
 // Post: devuelve una nueva lista enlazada vacía.
