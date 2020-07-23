@@ -23,9 +23,10 @@ int compare_tag(unsigned int tag, unsigned int set) {
     int way = 0;
     nodo_t* nodo = conjunto->listaEnlazada->prim;
     while (nodo != NULL) {
-        if (nodo->dato->tag == tag && nodo->dato->V == 1) {
+        if ((nodo->dato->tag == tag) && (nodo->dato->V == 1)) {
             return way;
         }
+
         way++;
         nodo = nodo->prox;
     }
@@ -55,6 +56,8 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
     }
 
     nodo->dato->datos = memoriaPrincipal.memoria[blocknum];
+    nodo->dato->tag = get_tag(blocknum);
+    nodo->dato->V = 1;
 }
 
 unsigned char read_byte(unsigned int address) {

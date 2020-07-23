@@ -14,7 +14,7 @@ typedef unsigned char bloqueDeMemoria_t[CACHE_BLOCK_SIZE];
 
 typedef struct bloqueCache {
     int V;
-    int tag;
+    unsigned int tag;
     bloqueDeMemoria_t* datos;
 } bloqueCache_t;
 
