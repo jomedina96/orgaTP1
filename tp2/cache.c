@@ -93,9 +93,15 @@ void write_byte(unsigned int address, unsigned char value) {
 void init() {
     associative_cache.amount_access = 0;
     associative_cache.amount_misses = 0;
-    for (int i=0; i<8; i++) {
+    for (int i=0; i<AMOUNT_SETS; i++) {
         conjunto_t *conjunto = malloc(sizeof(conjunto_t));
-        conjunto->listaEnlazada = lista_crear();
+        conjunto->contador = 0;
+        for (int j=0; j<AMOUNT_WAY; j++) {
+            conjunto->bloqueCache[j] = malloc(sizeof(bloqueCache_t));
+            conjunto->bloqueCache[j]->V = INVALID_BIT;
+            conjunto->bloqueCache[j]->ultimamente_usado = 0;
+            conjunto->bloqueCache[j]->datos = NULL;
+        }
         associative_cache.conjuntos[i] = conjunto;
     }
 
