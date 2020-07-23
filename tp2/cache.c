@@ -140,16 +140,16 @@ void lista_destruir(lista_t *lista){
 }
 
 
-void *lista_borrar_primero(lista_t *lista){
-    if(lista_esta_vacia(lista)) return NULL;
-    void* dato = lista->prim->dato;
+void lista_borrar_primero(lista_t *lista){
+    if(lista_esta_vacia(lista)) return;
+
     nodo_t* prox_nodo = lista->prim->prox;
     free(lista->prim);
     lista->prim = prox_nodo;
     if (prox_nodo == NULL)
         lista->ult = NULL;
     lista->len--;
-    return dato;
+
 }
 
 bool lista_insertar_primero(lista_t *lista, bloqueCache_t* dato){
@@ -186,12 +186,12 @@ size_t lista_largo(const lista_t *lista){
     return lista->len;
 }
 
-void *lista_ver_primero(const lista_t *lista){
+bloqueCache_t *lista_ver_primero(const lista_t *lista){
     if (lista_esta_vacia(lista)) return NULL;
     return lista->prim->dato;
 }
 
-void *lista_ver_ultimo(const lista_t* lista){
+bloqueCache_t *lista_ver_ultimo(const lista_t* lista){
     if (lista_esta_vacia(lista)) return NULL;
     return lista->ult->dato;
 }

@@ -126,5 +126,5 @@ float get_miss_rate() {
 
 
 void write_tocache(unsigned int address, unsigned char value) {
-    return;
+
 }

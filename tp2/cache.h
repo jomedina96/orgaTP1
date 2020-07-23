@@ -27,14 +27,9 @@ typedef struct conjunto {
     lista_t* listaEnlazada;
 } conjunto_t;
 
-//typedef struct way {
-//    conjunto_t* conjuntos[8];
-//} way_t;
-
 typedef struct cache {
     int amount_access;
     int amount_misses;
-    //way_t* ways[4];
     conjunto_t* conjuntos[8];
 } cache_t;
 
@@ -73,27 +68,25 @@ bool lista_insertar_ultimo(lista_t *lista, bloqueCache_t* dato);
 
 // Saca el primer elemento de la lista, y se devuelve su valor, si está vacía, devuelve NULL.
 // Pre: la lista fue creada.
-// Post: se devolvió el valor del primer elemento anterior, la lista
-// contiene un elemento menos, si la lista no estaba vacía.
-void *lista_borrar_primero(lista_t *lista);
+// Post: se borro el primer elemento de la lista
+void lista_borrar_primero(lista_t *lista);
 
 // Devuelve el primer elemento de la lista. Devuelve NULL en caso de no haber elementos.
 // Pre: La lista fue creada
 // Post: se devolvio el primer elemento de la lista
-void *lista_ver_primero(const lista_t *lista);
+bloqueCache_t *lista_ver_primero(const lista_t *lista);
 
 // Devuelve el ultimo elemento de la lista. Devuelve NULL en caso de no haber elementos.
 // Pre: La lista fue creada
 // Post: Se devolvio el ultimo elemento de la lista
-void *lista_ver_ultimo(const lista_t* lista);
+bloqueCache_t *lista_ver_ultimo(const lista_t* lista);
 
 // Devuelve el largo de la lista enlazada.
 // Pre: La lista fue creada.
 // Post: Se devolvio el largo de la lista enlazada
 size_t lista_largo(const lista_t *lista);
 
-// Destruye la lista. Si se recibe la función destruir_dato por parametro,
-// para cada uno de los elementos de la lista llama a destruir_dato.
+// Destruye la lista.
 // Pre: la lista fue creada. destruir_dato es una función capaz de destruir
 // los datos de la lista, o NULL en caso de que no se la utilice.
 // Post: se eliminaron todos los elementos de la lista.
