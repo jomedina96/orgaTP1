@@ -35,9 +35,10 @@ int compare_tag(unsigned int tag, unsigned int set) {
 
 unsigned int select_oldest(unsigned int setnum) {
     conjunto_t* conjunto = associative_cache.conjuntos[setnum];
+    if (lista_esta_vacia(conjunto->listaEnlazada)) return 0;
 
     nodo_t* nodo = conjunto->listaEnlazada->prim;
-    for (int way = 0; way < conjunto->listaEnlazada->len; way++) {
+    for (int way = 0; way < lista_largo(conjunto->listaEnlazada); way++) {
         if (nodo == NULL) return way;
         nodo = nodo->prox;
     }
@@ -113,6 +114,22 @@ void init() {
     }
 }
 
+float get_miss_rate() {
+    return ((float)associative_cache.amount_misses)/((float)associative_cache.amount_access);
+}
+
+
+void write_tocache(unsigned int address, unsigned char value) {
+    unsigned int offset, set, tag;
+
+    offset = get_offset(address);
+    set = find_set(address);
+    tag = get_tag(address);
+
+    associative_cache.conjuntos[set]
+}
+
+// -----------------------------
 nodo_t* crear_nodo(bloqueCache_t* valor){
     nodo_t* nodo = malloc(sizeof(nodo_t));
     if (!nodo) return NULL;

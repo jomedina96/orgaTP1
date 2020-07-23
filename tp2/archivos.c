@@ -119,12 +119,3 @@ bool procesar_linea(char* comando_buffer, char* primer_parametro_buffer, char* s
     }
     return true;
 }
-
-float get_miss_rate() {
-    return ((float)associative_cache.amount_misses)/((float)associative_cache.amount_access);
-}
-
-
-void write_tocache(unsigned int address, unsigned char value) {
-
-}
