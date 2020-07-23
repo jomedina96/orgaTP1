@@ -2,6 +2,7 @@
 // Created by jonathanmedina on 29/6/20.
 //
 #include "archivos.h"
+#include "cache.h"
 
 bool ejecutar_desde_archivo(char* nombre_archivo) {
     FILE* input = fopen(nombre_archivo, "r+t");
@@ -97,22 +98,22 @@ bool procesar_linea(char* comando_buffer, char* primer_parametro_buffer, char* s
         if ((strlen(primer_parametro_buffer) != 0) || (strlen(segundo_parametro_buffer) != 0)) {
             return false;
         }
-
+        init();
     } else if (strcmp(comando_buffer, R) == 0) {
         if ((strlen(primer_parametro_buffer) == 0) || (strlen(segundo_parametro_buffer) != 0)) {
             return false;
         }
-
+        read_byte(atoi(primer_parametro_buffer));
     } else if (strcmp(comando_buffer, W) == 0) {
         if ((strlen(primer_parametro_buffer) == 0) || (strlen(segundo_parametro_buffer) == 0)) {
             return false;
         }
-
+        write_byte(atoi(primer_parametro_buffer), atoi(segundo_parametro_buffer));
     } else if (strcmp(comando_buffer, MR) == 0) {
         if ((strlen(primer_parametro_buffer) != 0) || (strlen(segundo_parametro_buffer) != 0)) {
             return false;
         }
-
+        get_miss_rate();
     } else {
         return false;
     }

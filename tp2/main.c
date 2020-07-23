@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "archivos.h"
 #include "binario.h"
+#include "cache.h"
 
 int main(int argc, char* argv[]) {
-	//ejecutar_desde_archivo("prueba_rota_5.mem");
-	unsigned int test = 243;
-	printf("Offset: %d\n", get_offset(test));
-    printf("Idx: %d\n", find_set(test));
-    printf("Tag: %d\n", get_tag(test));
-
+    init();
+	bool couldExecute = ejecutar_desde_archivo(argv[1]);
+	if (!couldExecute){
+	    return 1;
+	}
     return 0;
 }
