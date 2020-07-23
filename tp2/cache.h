@@ -8,6 +8,8 @@
 #define MAIN_MEMORY_SIZE 512
 #define AMOUNT_SETS 8
 #define AMOUNT_WAY 4
+#define VALID_BIT 1
+#define INVALID_BIT 0
 
 struct lista;
 typedef struct lista lista_t;
