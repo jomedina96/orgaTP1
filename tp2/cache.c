@@ -8,15 +8,12 @@
 int compare_tag(unsigned int tag, unsigned int set) {
     conjunto_t* conjunto = associative_cache.conjuntos[set];
 
-    int way = 0;
-    nodo_t* nodo = conjunto->listaEnlazada->prim;
-    while (nodo != NULL) {
-        if ((nodo->dato->tag == tag) && (nodo->dato->V == 1)) {
+    for (int way = 0; way < AMOUNT_WAY; way++) {
+        bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
+
+        if ((bloqueCache->V == 1) && bloqueCache->tag == tag) {
             return way;
         }
-
-        way++;
-        nodo = nodo->prox;
     }
 
     return -1;
