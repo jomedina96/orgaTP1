@@ -11,8 +11,6 @@
 #define VALID_BIT 1
 #define INVALID_BIT 0
 
-struct lista;
-typedef struct lista lista_t;
 typedef unsigned char bloqueDeMemoria_t[CACHE_BLOCK_SIZE];
 
 typedef struct bloqueCache {
