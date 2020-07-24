@@ -3,6 +3,7 @@
 #include "binario.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #define CACHE_BLOCK_SIZE 128
 #define MAIN_MEMORY_SIZE 512

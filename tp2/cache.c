@@ -34,6 +34,7 @@ unsigned int select_oldest(unsigned int setnum) {
 }
 
 void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
+    printf("Taking blocknum %d to cache with way: %d, set: %d\n", blocknum, way, set);
     conjunto_t* conjunto = associative_cache.conjuntos[set];
 
     bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
@@ -50,14 +51,17 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
 }
 
 unsigned char read_byte(unsigned int address) {
-    unsigned int offset, set, tag, way, blocknum;
+    unsigned int offset, set, tag, blocknum;
 
     offset = get_offset(address);
     set = find_set(address);
     tag = get_tag(address);
-    way = compare_tag(tag, set);
+
+    printf("Reading byte with: %d tag, %d set, %d offset\n", tag, set, offset);
+    int way = compare_tag(tag, set);
 
     if (way == -1) {
+        printf("Couldn't find address in cache\n");
         way = select_oldest(set);
 
         //calcula el bloque de memoria principal
@@ -77,6 +81,8 @@ void write_byte(unsigned int address, unsigned char value) {
     offset = get_offset(address);
     set = find_set(address);
     tag = get_tag(address);
+
+    printf("Writing byte %u with: %d tag, %d set, %d offset\n", value, tag, set, offset);
 
     write_tocache(address, value);
 
@@ -105,25 +111,33 @@ void init() {
 }
 
 float get_miss_rate() {
-    if (associative_cache.amount_access == 0) return 0;
+    float missRate;
+    if (associative_cache.amount_access == 0) {
+        missRate =  0;
+    } else {
+        missRate = ((float)associative_cache.amount_misses)/((float)associative_cache.amount_access);
+    }
 
-    return ((float)associative_cache.amount_misses)/((float)associative_cache.amount_access);
+    printf("Missrate: %f", missRate);
+    return missRate;
 }
 
 
 void write_tocache(unsigned int address, unsigned char value) {
-    unsigned int offset, set, tag, way;
+    unsigned int offset, set, tag;
 
     offset = get_offset(address);
     set = find_set(address);
     tag = get_tag(address);
 
     conjunto_t* conjunto = associative_cache.conjuntos[set];
-    way = compare_tag(tag, set);
+    int way = compare_tag(tag, set);
 
     if ( way == -1) {
-        associative_cache.amount_misses++
+        printf("Couldn't write to cache %d tag, %d set, %d offset\n", tag, set, offset);
+        associative_cache.amount_misses++;
     } else {
+        printf("Hit writing cache %d tag, %d set, %d offset\n", tag, set, offset);
         bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
         *(bloqueCache->datos)[offset] = value;
         bloqueCache->ultimamente_usado = conjunto->contador;
