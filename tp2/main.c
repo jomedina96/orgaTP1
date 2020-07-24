@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) {
     init();
 	bool couldExecute = ejecutar_desde_archivo(argv[1]);
 	if (!couldExecute){
+	    destroy();
 	    return 1;
 	}
     return 0;

@@ -121,7 +121,7 @@ void init() {
 
     for (int i=0; i<MAIN_MEMORY_SIZE; i++) {
         memoriaPrincipal.memoria[i] = malloc(sizeof(bloqueDeMemoria_t));
-        memset(memoriaPrincipal.memoria[i], '\0', CACHE_BLOCK_SIZE);
+        memset(memoriaPrincipal.memoria[i], '\0', sizeof(bloqueDeMemoria_t));
     }
 }
 
