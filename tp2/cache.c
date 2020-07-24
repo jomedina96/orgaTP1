@@ -25,11 +25,20 @@ unsigned int select_oldest(unsigned int setnum) {
     for (int i = 0; i < AMOUNT_WAY; i++) {
         bloqueCache_t* bloqueViejo = conjunto->bloqueCache[way];
         bloqueCache_t* bloqueNuevo = conjunto->bloqueCache[i];
-
-        if ((bloqueNuevo->V == VALID_BIT) && (bloqueNuevo->ultimamente_usado < bloqueViejo->ultimamente_usado)) {
-            way = i;
+        switch (bloqueNuevo->V) {
+            case INVALID_BIT: {
+                way = i;
+                break;
+            }
+            case VALID_BIT: {
+                if (bloqueNuevo->ultimamente_usado < bloqueViejo->ultimamente_usado) {
+                    way = i;
+                }
+                break;
+            }
         }
     }
+
     return way;
 }
 
@@ -59,11 +68,13 @@ unsigned char read_byte(unsigned int address) {
 
     if (way == -1) {
         printf("Couldn't find address in cache\n");
-        way = select_oldest(set);
+        unsigned int newWay = select_oldest(set);
 
         //calcula el bloque de memoria principal
         blocknum = (tag << 3) + set;
-        read_tocache(blocknum, way, set);
+        read_tocache(blocknum, newWay, set);
+
+        way = newWay;
     }
 
     conjunto_t* conjunto = associative_cache.conjuntos[set];
@@ -87,7 +98,7 @@ void write_byte(unsigned int address, unsigned char value) {
     write_tocache(address, value);
 
     blocknum = (tag << 3) + set;
-    *(memoriaPrincipal.memoria)[blocknum][offset] = value;
+    *(memoriaPrincipal.memoria[blocknum])[offset] = value;
 }
 
 void init() {
