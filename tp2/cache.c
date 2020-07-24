@@ -131,3 +131,21 @@ void write_tocache(unsigned int address, unsigned char value) {
     }
     associative_cache.amount_access++;
 }
+
+void destroy() {
+    for (int i=0; i<MAIN_MEMORY_SIZE; i++) {
+        if (!memoriaPrincipal.memoria[i]) continue;
+        free(memoriaPrincipal.memoria[i]);
+    }
+    for (int i=0; i < AMOUNT_SETS; i++) {
+        conjunto_t* conjunto = associative_cache.conjuntos[i];
+        if (!conjunto) continue;
+
+        for (int j = 0; j < AMOUNT_WAY; j++) {
+            if (!conjunto->bloqueCache[j]) continue;
+            free(conjunto->bloqueCache[j]);
+        }
+        free(conjunto);
+    }
+
+}

@@ -90,6 +90,7 @@ bool procesar_archivo(char* buffer) {
 
         i++;
     }
+    destroy();
     return true;
 }
 

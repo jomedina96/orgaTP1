@@ -48,5 +48,6 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set);
 void write_tocache(unsigned int address, unsigned char value);
 
 void init();
+void destroy();
 
 #endif //TP2_CACHE_H
