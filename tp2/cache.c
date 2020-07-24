@@ -56,40 +56,33 @@ unsigned char read_byte(unsigned int address) {
     set = find_set(address);
     tag = get_tag(address);
     way = compare_tag(tag, set);
+
     if (way == -1) {
         way = select_oldest(set);
 
         //calcula el bloque de memoria principal
         blocknum = (tag << 3) + set;
-        if (way < AMOUNT_WAY-1) {
-            read_tocache(blocknum, way+1, set);
-        } else {
-            read_tocache(blocknum, way, set);
-        }
-
+        read_tocache(blocknum, way, set);
     }
 
     conjunto_t* conjunto = associative_cache.conjuntos[set];
-    nodo_t* nodo = conjunto->listaEnlazada->prim;
+    bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
 
-    for (int i=0; i <= way; i++) {
-        nodo = nodo->prox;
-    }
-
-    return *(nodo->dato->datos)[offset];
+    return *(bloqueCache->datos)[offset];
 }
 
 void write_byte(unsigned int address, unsigned char value) {
-
     unsigned int offset, set, tag, way, blocknum;
 
     offset = get_offset(address);
     set = find_set(address);
     tag = get_tag(address);
     way = compare_tag(tag, set);
+
     if ( way != -1) {
         write_tocache(address, value);
     }
+
     blocknum = (tag << 3) + set;
     *(memoriaPrincipal.memoria)[blocknum][offset] = value;
 }
