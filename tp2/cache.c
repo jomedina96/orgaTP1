@@ -39,6 +39,8 @@ unsigned int select_oldest(unsigned int setnum) {
         }
     }
 
+    printf("Oldest for set: %d way: %d\n", setnum, way);
+
     return way;
 }
 
@@ -49,7 +51,7 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
     bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
 
     bloqueCache->datos = memoriaPrincipal.memoria[blocknum];
-    bloqueCache->tag = get_tag(blocknum);
+    bloqueCache->tag = blocknum>>3;
     bloqueCache->V = VALID_BIT;
 
     associative_cache.amount_access++;
@@ -68,13 +70,11 @@ unsigned char read_byte(unsigned int address) {
 
     if (way == -1) {
         printf("Couldn't find address in cache\n");
-        unsigned int newWay = select_oldest(set);
+        way = select_oldest(set);
 
         //calcula el bloque de memoria principal
         blocknum = (tag << 3) + set;
-        read_tocache(blocknum, newWay, set);
-
-        way = newWay;
+        read_tocache(blocknum, way, set);
     }
 
     conjunto_t* conjunto = associative_cache.conjuntos[set];
