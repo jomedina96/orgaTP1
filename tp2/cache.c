@@ -42,9 +42,6 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
     bloqueCache->datos = memoriaPrincipal.memoria[blocknum];
     bloqueCache->tag = get_tag(blocknum);
     bloqueCache->V = VALID_BIT;
-    bloqueCache->ultimamente_usado = conjunto->contador;
-
-    conjunto->contador++;
 
     associative_cache.amount_access++;
     associative_cache.amount_misses++;
@@ -71,6 +68,9 @@ unsigned char read_byte(unsigned int address) {
 
     conjunto_t* conjunto = associative_cache.conjuntos[set];
     bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
+
+    bloqueCache->ultimamente_usado = conjunto->contador;
+    conjunto->contador++;
 
     return *(bloqueCache->datos)[offset];
 }

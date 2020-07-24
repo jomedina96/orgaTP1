@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #define CACHE_BLOCK_SIZE 128
 #define MAIN_MEMORY_SIZE 512
