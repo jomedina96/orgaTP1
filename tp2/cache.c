@@ -11,7 +11,7 @@ int compare_tag(unsigned int tag, unsigned int set) {
     for (int way = 0; way < AMOUNT_WAY; way++) {
         bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
 
-        if ((bloqueCache->V == 1) && bloqueCache->tag == tag) {
+        if ((bloqueCache->V == VALID_BIT) && bloqueCache->tag == tag) {
             return way;
         }
     }
@@ -108,6 +108,8 @@ void init() {
 }
 
 float get_miss_rate() {
+    if (associative_cache.amount_access == 0) return 0;
+
     return ((float)associative_cache.amount_misses)/((float)associative_cache.amount_access);
 }
 
