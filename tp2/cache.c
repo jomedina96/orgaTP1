@@ -57,7 +57,7 @@ unsigned char read_byte(unsigned int address) {
     set = find_set(address);
     tag = get_tag(address);
 
-    printf("Reading byte with: %d tag, %d set, %d offset\n", tag, set, offset);
+    printf("Reading byte with: %d tag, %d set, %d offset. Address: %d\n", tag, set, offset, address);
     int way = compare_tag(tag, set);
 
     if (way == -1) {
@@ -118,7 +118,7 @@ float get_miss_rate() {
         missRate = ((float)associative_cache.amount_misses)/((float)associative_cache.amount_access);
     }
 
-    printf("Missrate: %f", missRate);
+    printf("Missrate: %f\n", missRate);
     return missRate;
 }
 
