@@ -83,7 +83,10 @@ unsigned char read_byte(unsigned int address) {
     bloqueCache->ultimamente_usado = conjunto->contador;
     conjunto->contador++;
 
-    return *(bloqueCache->datos)[offset];
+    unsigned char readByte = *(*(bloqueCache->datos)+offset);
+    printf("Read from cache the byte: %u\n", readByte);
+
+    return readByte;
 }
 
 void write_byte(unsigned int address, unsigned char value) {
@@ -98,7 +101,7 @@ void write_byte(unsigned int address, unsigned char value) {
     write_tocache(address, value);
 
     blocknum = (tag << 3) + set;
-    *(memoriaPrincipal.memoria[blocknum])[offset] = value;
+    *(*(memoriaPrincipal.memoria[blocknum]) + offset) = value;
 }
 
 void init() {
@@ -118,6 +121,7 @@ void init() {
 
     for (int i=0; i<MAIN_MEMORY_SIZE; i++) {
         memoriaPrincipal.memoria[i] = malloc(sizeof(bloqueDeMemoria_t));
+        memset(memoriaPrincipal.memoria[i], '\0', CACHE_BLOCK_SIZE);
     }
 }
 
