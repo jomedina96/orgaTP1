@@ -54,7 +54,7 @@ unsigned char read_byte(unsigned int address) {
     set = find_set(address);
     tag = get_tag(address);
 
-    printf("Reading byte with: %d tag, %d set, %d offset. Address: %d\n", tag, set, offset, address);
+    printf("\nReading byte with: %d tag, %d set, %d offset. Address: %d\n", tag, set, offset, address);
     int way = compare_tag(tag, set);
 
     if (way == -1) {
@@ -82,7 +82,7 @@ void write_byte(unsigned int address, unsigned char value) {
     set = find_set(address);
     tag = get_tag(address);
 
-    printf("Writing byte %u with: %d tag, %d set, %d offset\n", value, tag, set, offset);
+    printf("\nWriting byte %u with: %d tag, %d set, %d offset. Address: %d\n", value, tag, set, offset, address);
 
     write_tocache(address, value);
 
