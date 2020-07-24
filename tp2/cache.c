@@ -72,16 +72,13 @@ unsigned char read_byte(unsigned int address) {
 }
 
 void write_byte(unsigned int address, unsigned char value) {
-    unsigned int offset, set, tag, way, blocknum;
+    unsigned int offset, set, tag, blocknum;
 
     offset = get_offset(address);
     set = find_set(address);
     tag = get_tag(address);
-    way = compare_tag(tag, set);
 
-    if ( way != -1) {
-        write_tocache(address, value);
-    }
+    write_tocache(address, value);
 
     blocknum = (tag << 3) + set;
     *(memoriaPrincipal.memoria)[blocknum][offset] = value;
@@ -115,28 +112,22 @@ float get_miss_rate() {
 
 
 void write_tocache(unsigned int address, unsigned char value) {
-    unsigned int offset, set, tag;
+    unsigned int offset, set, tag, way;
 
     offset = get_offset(address);
     set = find_set(address);
     tag = get_tag(address);
 
     conjunto_t* conjunto = associative_cache.conjuntos[set];
-    bool couldFoundWay = false;
+    way = compare_tag(tag, set);
 
-    for (int way = 0; way < AMOUNT_WAY; way++) {
+    if ( way == -1) {
+        associative_cache.amount_misses++
+    } else {
         bloqueCache_t* bloqueCache = conjunto->bloqueCache[way];
-
-        if ((bloqueCache->V == VALID_BIT) && (bloqueCache->tag == tag)) {
-            *(bloqueCache->datos)[offset] = value;
-            couldFoundWay = true;
-            bloqueCache->ultimamente_usado = conjunto->contador;
-            conjunto->contador++;
-            break;
-        }
-
+        *(bloqueCache->datos)[offset] = value;
+        bloqueCache->ultimamente_usado = conjunto->contador;
+        conjunto->contador++;
     }
-
-    if (!couldFoundWay) associative_cache.amount_misses++;
     associative_cache.amount_access++;
 }
