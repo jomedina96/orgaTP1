@@ -54,7 +54,6 @@ void read_tocache(unsigned int blocknum, unsigned int way, unsigned int set) {
     bloqueCache->tag = blocknum>>3;
     bloqueCache->V = VALID_BIT;
 
-    associative_cache.amount_access++;
     associative_cache.amount_misses++;
 }
 
@@ -82,6 +81,7 @@ unsigned char read_byte(unsigned int address) {
 
     bloqueCache->ultimamente_usado = conjunto->contador;
     conjunto->contador++;
+    associative_cache.amount_access++;
 
     unsigned char readByte = *(*(bloqueCache->datos)+offset);
     printf("Read from cache the byte: %u\n", readByte);
