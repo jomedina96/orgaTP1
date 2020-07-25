@@ -4,7 +4,7 @@ CFLAGS = -Wall -g
 SRC = archivos.c binario.c cache.c main.c
 OBJ = main.o game.o archivos.o neighbors.o
 FNAME = tp2
-FILES = 8
+FILES = 10
 
 #Rules
 tp.c: $(SRC) $(SRC_C)
