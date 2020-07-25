@@ -99,6 +99,7 @@ bool procesar_linea(char* comando_buffer, char* primer_parametro_buffer, char* s
         if ((strlen(primer_parametro_buffer) != 0) || (strlen(segundo_parametro_buffer) != 0)) {
             return false;
         }
+        destroy();
         init();
     } else if (strcmp(comando_buffer, R) == 0) {
         if ((strlen(primer_parametro_buffer) == 0) || (strlen(segundo_parametro_buffer) != 0)) {
