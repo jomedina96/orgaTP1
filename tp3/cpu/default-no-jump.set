@@ -17,7 +17,10 @@
 		"lw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 35, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "$t1 = MEM[base + $t2]"},
 		"sw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 43, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "MEM[base + $t2] = $t1"},
 		"andi": {"type": "I", "args": ["reg", "reg", "int"], "fields": {"op": 1, "rs": "#2", "rt": "#1", "imm": "#3", "func": 36}, "desc": "$t1 = $t2 & 23"},
-		"j": {"type": "I", "args": ["reg", "reg"], "fields": {"op": 2, "rs": "#2", "rt": "#1", "imm": 0}, "desc": "j rs + rt"}
+		"j": {"type": "I", "args": ["reg", "reg"], "fields": {"op": 2, "rs": "#2", "rt": "#1", "imm": 0}, "desc": "j rs + rt"},
+		"mult": {"type": "R", "args": ["reg", "reg"], "fields": {"op": 0, "rs": "#1", "rt": "#2", "rd": 0, "shamt": 0, "func": 24}, "desc": "(HI,LO) = $t1 * $t2"},
+		"mfhi": {"type": "R", "args": ["reg"], "fields": {"op": 0, "rs": 0, "rt": 0, "rd": "#1", "shamt": 0, "func": 16}, "desc": "$t1 = HI"},
+		"mflo": {"type": "R", "args": ["reg"], "fields": {"op": 0, "rs": 0, "rt": 0, "rd": "#1", "shamt": 0, "func": 18}, "desc": "$t1 = LO"}
 	},
 	"pseudo": {
 		"li":   {"args": ["reg", "int"], "to": ["addi #1, $0, #2"], "desc": "$t1 = 22"},
@@ -29,7 +32,9 @@
 		"ble":  {"args": ["reg", "reg", "offset"], "to": ["sgt $1, #1, #2", "beq $1, $0, #3"], "desc": "PC += ($t1 <= $t2) ? (offset * 4 + 4) : 4"},
 		"b":    {"args": ["offset"], "to": ["beq $0, $0, #1"], "desc": "PC += offset * 4 + 4"},
 		"neg":  {"args": ["reg", "reg"], "to": ["sub #1, $0, #2"], "desc": "$t1 = -$t2"},
-		"not":  {"args": ["reg", "reg"], "to": ["nor #1, #2, $0"], "desc": "$t1 = ~$t2"}
+		"not":  {"args": ["reg", "reg"], "to": ["nor #1, #2, $0"], "desc": "$t1 = ~$t2"},
+		"mul":  {"args": ["reg", "reg", "reg"], "to": ["mult #2, #3", "mflo #1"], "desc": "$t1 = $t2 * $t3"},
+		"lwmod": {"args": ["reg", "reg", "reg", "int"], "to": ["li $1, #4","mul $1, $1, #3", "add $1, $1, #2", "lw #1, 0($1)"], "desc": "$t1 = $(Rt + Rd * shamt)"}
 	},
 	"control": {
 		"0": {"RegDst": 1, "RegWrite": 1, "ALUOp": 2, "ALUSrc": 0, "MemToReg": 0},
@@ -52,7 +57,10 @@
 			{"aluop": 2, "func": 36, "out": {"Operation": 0}},
 			{"aluop": 2, "func": 37, "out": {"Operation": 1}},
 			{"aluop": 2, "func": 42, "out": {"Operation": 7}},
-			{"aluop": 2, "func": 39, "out": {"Operation": 12}}
+			{"aluop": 2, "func": 39, "out": {"Operation": 12}},
+			{"aluop": 2, "func": 24, "out": {"Operation": 8}},
+			{"aluop": 2, "func": 16, "out": {"Operation": 10}},
+			{"aluop": 2, "func": 18, "out": {"Operation": 11}}
 		],
 		"operations": {
 			"0": "and",
@@ -60,7 +68,10 @@
 			"2": "add",
 			"6": "sub",
 			"7": "slt",
-			"12": "nor"
+			"12": "nor",
+			"8": "mult",
+			"10": "mfhi",
+			"11": "mflo"
 		}
 	}
 }
