@@ -6,6 +6,7 @@
 		"Const4":     {"type": "Constant", "x": 85, "y": 173, "out": "Out", "val": 4, "size": 32},
 		"ForkPCAdder":{"type": "Fork", "x": 155, "y": 175, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 		"MuxPC":      {"type": "Multiplexer", "latency": 15, "x": 15, "y": 248, "size": 32, "sel": "PCSrc", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects PC+4 or the branch address as the new PC.", "pt": "Selecciona o PC+4 ou o endereço de branch como novo PC."}},
+		"MuxJumpALU": {"type": "Multiplexer", "latency": 15, "x": 20, "y": 290, "size": 32, "sel": "JumpALU", "in": ["0", "1"], "out": "Out"},
 		"InstMem":    {"type": "InstructionMemory", "latency": 300, "x": 90, "y": 215, "in": "Address", "out": "Instruction"},
 		
 		"IF/ID":      {"type": "PipelineRegister", "x": 180, "y": 110, "write": "Write", "flush": "Flush", "regs": {"NewPC": 32, "Instruction": 32}},
@@ -23,7 +24,7 @@
 		"NotStall":   {"type": "Not", "x": 175, "y": 2, "in": "Stall", "out": "Write"},
 		"ForkWrite":  {"type": "Fork", "x": 190, "y": 50, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		
-		"ID/EX":      {"type": "PipelineRegister", "x": 390, "y": 110, "regs": {"ReadData1": 32, "ReadData2": 32, "NewPC": 32, "Imm": 32, "Rs": 5, "Rt": 5, "Rd": 5, "RegDst": 1, "ALUOp": 2, "ALUSrc": 1, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
+		"ID/EX":      {"type": "PipelineRegister", "x": 390, "y": 110, "regs": {"ReadData1": 32, "ReadData2": 32, "NewPC": 32, "Imm": 32, "Rs": 5, "Rt": 5, "Rd": 5, "RegDst": 1, "ALUOp": 2, "ALUSrc": 1, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1, "Jump": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
 		
 		"ForkReg":    {"type": "Fork", "x": 445, "y": 281, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 		"MuxFwdA":    {"type": "Multiplexer", "latency": 15, "x": 425, "y": 230, "size": 32, "sel": "ForwardA", "out": "Out", "in": ["0", "1", "2"], "desc": {"default": "Selects, in conjunction with the forwarding unit, if the value of the 1st register comes from the register bank or if it's forwarded from one of the next stages.", "pt": "Selecciona, em conjunto com a unidade de atalhos, se o valor do 1º registo vem do banco de registos ou se é encaminhado de uma das etapas seguintes."}},
@@ -41,9 +42,10 @@
 		"ForkRt2":    {"type": "Fork", "x": 408, "y": 381, "size": 5, "in": "In", "out": ["Out1", "Out2", "Out3"]},
 		"ForwardingUnit":{"type": "ForwardingUnit", "latency": 50, "x": 470, "y": 410, "ex_mem_reg_write": "EX/MEM.RegWrite", "mem_wb_reg_write": "MEM/WB.RegWrite", "ex_mem_rd": "EX/MEM.Rd", "mem_wb_rd": "MEM/WB.Rd", "id_ex_rs": "ID/EX.Rs", "id_ex_rt": "ID/EX.Rt", "fwd_a": "ForwardA", "fwd_b": "ForwardB"},
 		
-		"EX/MEM":     {"type": "PipelineRegister", "x": 550, "y": 110, "regs": {"Result": 32, "ReadData2": 32, "Zero": 1, "RegBankDst": 5, "Target": 32, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
+		"EX/MEM":     {"type": "PipelineRegister", "x": 550, "y": 110, "regs": {"Result": 32, "ReadData2": 32, "Zero": 1, "RegBankDst": 5, "Target": 32, "Branch": 1, "MemRead": 1, "MemWrite": 1, "MemToReg": 1, "RegWrite": 1, "Jump": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.\nIf Flush is active, all values are set to zero, inserting a NOP instruction.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente.\nSe Flush estiver activo, todos os valores são colocados a zero, inserindo uma instrução NOP."}},
 		
-		"ForkMem":    {"type": "Fork", "x": 575, "y": 275, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
+		"ForkMem":    {"type": "Fork", "x": 575, "y": 275, "size": 32, "in": "In", "out": ["Out1", "Out2", "Out3"]},
+		"ForkJump":	  {"type": "Fork", "x": 575, "y": 230, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		"ForkEXR1":   {"type": "Fork", "x": 575, "y": 360, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 		"DataMem":    {"type": "DataMemory", "latency": 400, "x": 580, "y": 242, "size": 100, "address": "Address", "write_data": "WriteData", "out": "ReadData", "mem_read": "MemRead", "mem_write": "MemWrite"},
 		"AndBranch":  {"type": "And", "x": 600, "y": 180, "in1": "Branch", "in2": "Zero", "out": "Branch", "desc": {"default": "Determines if a branch should occur.", "pt": "Determina se um branch será efectuado."}},
@@ -54,7 +56,8 @@
 		"ForkBr2":    {"type": "Fork", "x": 397, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		"ForkBr3":    {"type": "Fork", "x": 185, "y": 62, "size": 1, "in": "In", "out": ["Out1", "Out2"]},
 		"OrFlush":    {"type": "Or", "x": 375, "y": 70, "in1": "Stall", "in2": "Branch", "out": "Flush"},
-		
+		"OrJump":	  {"type": "Or", "x": 600, "y": 30, "in1": "Branch", "in2": "Jump", "out": "BranchOrJump"},
+
 		"MEM/WB":     {"type": "PipelineRegister", "x": 680, "y": 110, "regs": {"Result": 32, "ReadData": 32, "RegBankDst": 5, "MemToReg": 1, "RegWrite": 1}, "desc": {"default": "Register that separates two pipeline stages.\nThe values that transition to the next stage are stored here temporarily.", "pt": "Registo que separa duas etapas do pipeline.\nOs valores que transitam para a próxima etapa são armazenados aqui temporariamente."}},
 		
 		"MuxMem":     {"type": "Multiplexer", "latency": 15, "x": 715, "y": 270, "size": 32, "sel": "MemToReg", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects the result of the ALU or the value read from memory to write to the destination register (WriteData).", "pt": "Selecciona o resultado da ALU ou o valor lido da memória para escrever no registo de destino (WriteData)."}},
@@ -69,7 +72,8 @@
 		{"from": "Const4", "out": "Out", "to": "PCAdder", "in": "In2"},
 		{"from": "PCAdder", "out": "PC+4", "to": "ForkPCAdder", "in": "In"},
 		{"from": "ForkPCAdder", "out": "Out1", "to": "MuxPC", "in": "0", "points": [{"x": 155, "y": 150}, {"x": 10, "y": 150}, {"x": 10, "y": 259}]},
-		{"from": "MuxPC", "out": "Out", "to": "PC", "in": "NewPC"},
+		{"from": "MuxPC", "out": "Out", "to": "MuxJumpALU", "in": "0"},
+		{"from": "MuxJumpALU", "out": "Out", "to": "PC", "in": "NewPC"},
 		{"from": "ForkPCAdder", "out": "Out2", "to": "IF/ID", "in": "NewPC", "end": {"x": 180, "y": 175}},
 		{"from": "InstMem", "out": "Instruction", "to": "IF/ID", "in": "Instruction", "end": {"x": 180, "y": 265}},
 		
@@ -99,6 +103,7 @@
 		{"from": "Control", "out": "MemWrite", "to": "ID/EX", "in": "MemWrite", "start": {"x": 290, "y": 135}, "end": {"x": 390, "y": 135}},
 		{"from": "Control", "out": "MemToReg", "to": "ID/EX", "in": "MemToReg", "start": {"x": 290, "y": 130}, "end": {"x": 390, "y": 130}},
 		{"from": "Control", "out": "RegWrite", "to": "ID/EX", "in": "RegWrite", "start": {"x": 290, "y": 125}, "end": {"x": 390, "y": 125}},
+		{"from": "Control", "out": "Jump", "to": "ID/EX", "in": "Jump"},
 		{"from": "HazardUnit", "out": "Stall", "to": "ForkStall", "in": "In"},
 		{"from": "ForkStall", "out": "Out1", "to": "OrFlush", "in": "Stall", "points": [{"x": 382, "y": 5}], "end": {"x": 382, "y": 70}},
 		{"from": "OrFlush", "out": "Flush", "to": "ID/EX", "in": "Flush", "start": {"x": 395, "y": 100}},
@@ -138,6 +143,7 @@
 		{"from": "AddBranch", "out": "Out", "to": "EX/MEM", "in": "Target", "end": {"x": 550, "y": 181}},
 		{"from": "ID/EX", "out": "Branch", "to": "EX/MEM", "in": "Branch", "start": {"x": 405, "y": 145}, "end": {"x": 550, "y": 145}},
 		{"from": "ID/EX", "out": "MemRead", "to": "ForkMemRd", "in": "In", "start": {"x": 405, "y": 140}},
+		{"from": "ID/EX", "out": "Jump", "to": "EX/MEM", "in": "Jump"},
 		{"from": "ForkMemRd", "out": "Out1", "to": "EX/MEM", "in": "MemRead", "end": {"x": 550, "y": 140}},
 		{"from": "ForkMemRd", "out": "Out2", "to": "HazardUnit", "in": "ID/EX.MemRead", "points": [{"x": 420, "y": 26}]},
 		{"from": "ID/EX", "out": "MemWrite", "to": "EX/MEM", "in": "MemWrite", "start": {"x": 405, "y": 135}, "end": {"x": 550, "y": 135}},
@@ -161,7 +167,12 @@
 		{"from": "EX/MEM", "out": "Target", "to": "MuxPC", "in": "1", "start": {"x": 565, "y": 181}, "points": [{"x": 575, "y": 181}, {"x": 575, "y": 67}, {"x": 5, "y": 67}, {"x": 5, "y": 270}]},
 		{"from": "EX/MEM", "out": "Zero", "to": "AndBranch", "in": "Zero", "start": {"x": 565, "y": 255}, "points": [{"x": 572, "y": 255}, {"x": 572, "y": 200}]},
 		{"from": "EX/MEM", "out": "Branch", "to": "AndBranch", "in": "Branch", "start": {"x": 565, "y": 145}, "points": [{"x": 580, "y": 145}, {"x": 580, "y": 190}]},
-		{"from": "AndBranch", "out": "Branch", "to": "ForkBr1", "in": "In", "points": [{"x": 640, "y": 195}, {"x": 640, "y": 62}]},
+		{"from": "EX/MEM", "out": "Jump", "to": "ForkJump", "in": "In"},
+		{"from": "ForkJump", "out": "Out2", "to": "MuxJumpALU", "in": "JumpALU"},
+		{"from": "ForkMem", "out": "Out3", "to": "MuxJumpALU", "in": "1"},
+		{"from": "ForkJump", "out": "Out1", "to": "OrJump", "in": "Jump"},
+		{"from": "AndBranch", "out": "Branch", "to": "OrJump", "in": "Branch"},
+		{"from": "OrJump", "out": "BranchOrJump", "to": "ForkBr1", "in": "In"},
 		{"from": "ForkBr1", "out": "Out1", "to": "ForkBr2", "in": "In"},
 		{"from": "ForkBr1", "out": "Out2", "to": "EX/MEM", "in": "Flush"},
 		{"from": "ForkBr2", "out": "Out1", "to": "ForkBr3", "in": "In"},

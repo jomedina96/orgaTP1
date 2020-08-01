@@ -19,7 +19,7 @@
 		"lw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 35, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "$t1 = MEM[base + $t2]"},
 		"sw":   {"type": "I", "args": ["reg", "data"], "fields": {"op": 43, "rs": "#2.offset", "rt": "#1", "imm": "#2.base"}, "desc": "MEM[base + $t2] = $t1"},
 		"andi": {"type": "I", "args": ["reg", "reg", "int"], "fields": {"op": 1, "rs": "#2", "rt": "#1", "imm": "#3", "func": 36}, "desc": "$t1 = $t2 & imm"},
-		"jalu":    {"type": "I", "args": ["reg", "reg"], "fields": {"op": 3, "rs": "#2", "rt": "#1", "imm": 0}, "desc": "j rs + rt"}
+		"jalu": {"type": "I", "args": ["reg", "reg"], "fields": {"op": 3, "rs": "#2", "rt": "#1", "imm": 0}, "desc": "j rs + rt"}
 	},
 	"pseudo": {
 		"li":   {"args": ["reg", "int"], "to": ["addi #1, $0, #2"], "desc": "$t1 = 22"},
